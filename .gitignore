@@ -1,5 +1,4 @@
-# O repositório entrega só o assembly, o circuito do SimulIDE e os GIFs.
-# Todo o resto (binário, vídeo, relatório, ferramentas) fica só local.
+
 /*
 !/.gitignore
 !/README.md

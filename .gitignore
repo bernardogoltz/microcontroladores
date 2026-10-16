@@ -1,22 +1,17 @@
-# Python
-__pycache__/
-*.py[cod]
-
-# grafo local do code-review-graph (caminhos absolutos)
-.code-review-graph/
-
-# saídas extras do avra (o .hex de build/ continua versionado)
-*.obj
-*.cof
-*.eep.hex
-*.lst
-*.map
-
-# instruções de trabalho da IA (não fazem parte da entrega)
-trabalho-3/PROMPT.md
-
-# editores / SO
-.vscode/
-.idea/
-*.swp
-.DS_Store
+# O repositório entrega só o assembly, o circuito do SimulIDE e os GIFs.
+# Todo o resto (binário, vídeo, relatório, ferramentas) fica só local.
+/*
+!/.gitignore
+!/README.md
+!/trabalho-*/
+/trabalho-*/*
+!/trabalho-*/README.md
+!/trabalho-*/src/
+!/trabalho-*/simulide/
+!/trabalho-*/docs/
+/trabalho-*/src/*
+!/trabalho-*/src/*.asm
+/trabalho-*/simulide/*
+!/trabalho-*/simulide/*.sim1
+/trabalho-*/docs/*
+!/trabalho-*/docs/*.gif

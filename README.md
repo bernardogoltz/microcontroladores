@@ -9,6 +9,5 @@ ATmega328P e simulados no SimulIDE.
 | [Trabalho 3](trabalho-3/) | Termômetro de 3 canais com ADC e displays multiplexados |
 | [Trabalho 4](trabalho-4/) | Média de 4 sensores de temperatura em displays de 7 segmentos |
 
-Cada pasta tem o relatório (`README.md`, com o GIF da simulação), o
-código-fonte em `src/`, o binário em `build/`, o circuito do SimulIDE em
-`simulide/`, o vídeo em `docs/` e os testes em `tools/`.
+Cada pasta tem o código em assembly (`src/`), o circuito do SimulIDE
+(`simulide/`) e os GIFs da simulação (`docs/`), mostrados no `README.md`.

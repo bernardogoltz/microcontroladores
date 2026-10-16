@@ -10,4 +10,4 @@ ATmega328P e simulados no SimulIDE.
 | [Trabalho 4](trabalho-4/) | Média de 4 sensores de temperatura em displays de 7 segmentos |
 
 Cada pasta tem o código em assembly (`src/`), o circuito do SimulIDE
-(`simulide/`) e os GIFs da simulação (`docs/`), mostrados no `README.md`.
+(`simulide/`) e o GIF da simulação (`docs/`), mostrados no `README.md`.

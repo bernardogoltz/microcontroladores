@@ -6,8 +6,6 @@ Calculadora de dois dígitos em assembly do ATmega328P. Lê um teclado matricial
 
 ![Calculadora simulada no SimulIDE](docs/simulide.gif)
 
-![Multiplexação dos displays em câmera lenta](docs/multiplexacao.gif)
-
 [Circuito SimulIDE](simulide/calculadora.sim1)
 
 ## Código

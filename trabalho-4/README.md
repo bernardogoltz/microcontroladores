@@ -2,7 +2,7 @@
 
 Trabalho 4 de Microcontroladores (2026/2).
 
-**Aluno:** _(preencher)_
+**Aluno:** Bernardo Ivo Goltz — matrícula 202112108
 
 Termômetro escrito em **assembly do ATmega328P**. Quatro sensores de
 temperatura ligados nos conversores A/D (ADC0–ADC3) são lidos a cada
@@ -52,8 +52,6 @@ tensão para 2 casas e o ADC trunca cada leitura. A conta exata com os
 códigos do ADC está em [Conversão para °C](#conversão-para-c).
 
 ## Hardware
-
-![Esquema de ligação](docs/esquema.svg)
 
 | Componente | Quantidade |
 |---|---|
@@ -275,8 +273,7 @@ mostra números para médias de 98 a 568.
 │   └── termometro.sim1     circuito do SimulIDE
 ├── docs/
 │   ├── simulide.mp4        vídeo da simulação no SimulIDE
-│   ├── simulide.gif        o mesmo vídeo em GIF
-│   └── esquema.svg         esquema de ligação
+│   └── simulide.gif        o mesmo vídeo em GIF
 └── tools/
     ├── avrsim.py           montador + simulador do ATmega328P (subconjunto)
     ├── testes.py           testes automáticos

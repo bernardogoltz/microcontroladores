@@ -6,7 +6,7 @@ Trabalho 3 de Microcontroladores (2026/2).
 
 | Nome | Matrícula |
 |---|---|
-| _(preencher)_ | _(preencher)_ |
+| Bernardo Ivo Goltz | 202112108 |
 | _(preencher)_ | _(preencher)_ |
 
 **Vídeo da apresentação:** _(colocar o link aqui)_ — cópia local em
@@ -53,8 +53,6 @@ esse valor arredondado. Nada no circuito foi arrastado durante a gravação
 (primeiro e último quadros comparados).
 
 ## Hardware
-
-![Esquema de ligação](docs/esquema.svg)
 
 | Componente | Quantidade |
 |---|---|
@@ -286,8 +284,7 @@ acesa a dezena aparece mesmo se for 0 (`100`).
 │   └── termometro.sim1     circuito do SimulIDE
 ├── docs/
 │   ├── simulide.mp4        vídeo da simulação no SimulIDE
-│   ├── simulide.gif        o mesmo vídeo em GIF
-│   └── esquema.svg         esquema de ligação
+│   └── simulide.gif        o mesmo vídeo em GIF
 └── tools/
     ├── avrsim.py           montador + simulador do ATmega328P (subconjunto)
     ├── testes.py           testes automáticos

@@ -2,7 +2,7 @@
 
 Trabalho 2 de Microcontroladores (2026/2).
 
-**Aluno:** _(preencher)_
+**Aluno:** Bernardo Ivo Goltz — matrícula 202112108
 
 Calculadora de dois dígitos escrita em **assembly do ATmega328P**. Lê um
 teclado matricial 4×4 (dígitos 0–9, `+`, `−`, `C` e `=`) e mostra os números
@@ -49,8 +49,6 @@ simulador do repositório a partir das escritas em `PORTB`/`PORTD`:
 - Código em assembly do ATmega328P.
 
 ## Hardware
-
-![Esquema de ligação](docs/esquema.svg)
 
 | Componente | Quantidade |
 |---|---|
@@ -210,8 +208,7 @@ com `lpm`:
 ├── docs/
 │   ├── simulide.mp4        vídeo da simulação no SimulIDE
 │   ├── simulide.gif        o mesmo vídeo em GIF
-│   ├── multiplexacao.gif   multiplexação em câmera lenta
-│   └── esquema.svg         esquema de ligação
+│   └── multiplexacao.gif   multiplexação em câmera lenta
 └── tools/
     ├── avrsim.py           montador + simulador do ATmega328P (subconjunto)
     ├── testes.py           testes automáticos da calculadora

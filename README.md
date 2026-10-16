@@ -1,6 +1,6 @@
-# Microcontroladores — 2026/2
+# Microcontroladores 
 
-Trabalhos da disciplina de Microcontroladores, escritos em assembly do
+Trabalhos da disciplina de Microcontroladores, assembler
 ATmega328P e simulados no SimulIDE.
 
 | Trabalho | Título |

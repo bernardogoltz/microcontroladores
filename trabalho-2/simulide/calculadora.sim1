@@ -1,0 +1,109 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="MCU" CircId="mega328-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="-1" vflip="1" label="ATmega328P" idLabPos="-36,-20" labelrot="0" valLabPos="0,0" valLabRot="0" Frequency="16 MHz" Program="../build/calculadora.hex" Auto_Load="false" saveEepr="false" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" SerialMon="-1" />
+
+<item itemtype="ResistorDip" CircId="ResistorDip-2" mainComp="false" Show_id="false" Show_Val="false" Pos="72,40" rotation="0" hflip="1" vflip="1" label="ResistorDip-2" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="220 Ω" Size="7" PullUp="false" PuVolt="5 V" />
+
+<item itemtype="Seven Segment" CircId="7Seg-3" mainComp="false" Show_id="true" Show_Val="false" Pos="128,40" rotation="0" hflip="1" vflip="1" label="Display" idLabPos="0,-44" labelrot="0" valLabPos="0,0" valLabRot="0" Color="Red" NumDisplays="2 _7seg" Vertical_Pins="false" CommonCathode="true" Threshold="2.4 V" MaxCurrent="0.006 A" Resistance="1 Ω" />
+
+<item itemtype="Resistor" CircId="Resistor-18" mainComp="false" Show_id="false" Show_Val="true" Pos="80,104" rotation="0" hflip="1" vflip="1" label="Resistor-18" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="1 kΩ" />
+
+<item itemtype="BJT" CircId="Q-19" mainComp="false" Show_id="false" Show_Val="false" Pos="128,104" rotation="0" hflip="1" vflip="1" label="Q1" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" PNP="false" Gain="100" Vcrit="0.670736 V" />
+
+<item itemtype="Ground" CircId="Ground-20" mainComp="false" Show_id="false" Show_Val="false" Pos="136,144" rotation="0" hflip="1" vflip="1" label="Ground-20" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="BJT" CircId="Q-21" mainComp="false" Show_id="false" Show_Val="false" Pos="176,104" rotation="0" hflip="-1" vflip="1" label="Q2" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" PNP="false" Gain="100" Vcrit="0.670736 V" />
+
+<item itemtype="Ground" CircId="Ground-22" mainComp="false" Show_id="false" Show_Val="false" Pos="168,144" rotation="0" hflip="1" vflip="1" label="Ground-22" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Resistor" CircId="Resistor-23" mainComp="false" Show_id="false" Show_Val="true" Pos="224,104" rotation="0" hflip="1" vflip="1" label="Resistor-23" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="1 kΩ" />
+
+<item itemtype="KeyPad" CircId="KeyPad-32" mainComp="false" Show_id="true" Show_Val="false" Pos="-232,-20" rotation="0" hflip="1" vflip="1" label="Teclado" idLabPos="0,-20" labelrot="0" valLabPos="0,0" valLabRot="0" Rows="4" Cols="3" Key_Labels="789456123C0&#x3D;" />
+
+<item itemtype="Node" CircId="Node-35" mainComp="false" Pos="-152,20" />
+
+<item itemtype="Node" CircId="Node-38" mainComp="false" Pos="-120,36" />
+
+<item itemtype="Push" CircId="Push-44" mainComp="false" Show_id="true" Show_Val="false" Pos="-152,60" rotation="90" hflip="1" vflip="1" label="+" idLabPos="-22,-8" labelrot="-90" valLabPos="0,0" valLabRot="0" Norm_Close="false" Poles="1" />
+
+<item itemtype="Push" CircId="Push-45" mainComp="false" Show_id="true" Show_Val="false" Pos="-120,60" rotation="90" hflip="1" vflip="1" label="−" idLabPos="-22,-8" labelrot="-90" valLabPos="0,0" valLabRot="0" Norm_Close="false" Poles="1" />
+
+<item itemtype="Node" CircId="Node-46" mainComp="false" Pos="-120,88" />
+
+<item itemtype="TextComponent" CircId="Text-52" mainComp="false" Show_id="false" Show_Val="false" Pos="52,-8" rotation="0" hflip="1" vflip="1" label="Text-52" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="0 _px" Border="0 _px" Color="#ffffdc" Opacity="0" Font="Helvetica [Cronyx]" Font_Color="#800000" Font_Size="8 _px" Fixed_Width="false" Text="7 x 220 Ω" />
+
+<item itemtype="TextComponent" CircId="Text-53" mainComp="false" Show_id="false" Show_Val="false" Pos="-208,-96" rotation="0" hflip="1" vflip="1" label="Text-53" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 2 - Calculadora com teclado matricial&#xa;ATmega328P @ 16 MHz - displays multiplexados (Timer0, 2,5 ms)" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="mega328-1-PORTD0" endpinid="ResistorDip-2-resistor0-ePin0" pointList="8,16,56,16" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="ResistorDip-2-resistor0-ePin1" endpinid="7Seg-3-pin_a" pointList="88,16,104,16" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="mega328-1-PORTD1" endpinid="ResistorDip-2-resistor1-ePin2" pointList="8,24,56,24" />
+
+<item itemtype="Connector" uid="Connector-7" startpinid="ResistorDip-2-resistor1-ePin3" endpinid="7Seg-3-pin_b" pointList="88,24,104,24" />
+
+<item itemtype="Connector" uid="Connector-8" startpinid="mega328-1-PORTD2" endpinid="ResistorDip-2-resistor2-ePin4" pointList="8,32,56,32" />
+
+<item itemtype="Connector" uid="Connector-9" startpinid="ResistorDip-2-resistor2-ePin5" endpinid="7Seg-3-pin_c" pointList="88,32,104,32" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="mega328-1-PORTD3" endpinid="ResistorDip-2-resistor3-ePin6" pointList="8,40,56,40" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="ResistorDip-2-resistor3-ePin7" endpinid="7Seg-3-pin_d" pointList="88,40,104,40" />
+
+<item itemtype="Connector" uid="Connector-12" startpinid="mega328-1-PORTD4" endpinid="ResistorDip-2-resistor4-ePin8" pointList="8,48,56,48" />
+
+<item itemtype="Connector" uid="Connector-13" startpinid="ResistorDip-2-resistor4-ePin9" endpinid="7Seg-3-pin_e" pointList="88,48,104,48" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="mega328-1-PORTD5" endpinid="ResistorDip-2-resistor5-ePin10" pointList="8,88,24,88,24,56,56,56" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="ResistorDip-2-resistor5-ePin11" endpinid="7Seg-3-pin_f" pointList="88,56,104,56" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="mega328-1-PORTD6" endpinid="ResistorDip-2-resistor6-ePin12" pointList="8,96,32,96,32,64,56,64" />
+
+<item itemtype="Connector" uid="Connector-17" startpinid="ResistorDip-2-resistor6-ePin13" endpinid="7Seg-3-pin_g" pointList="88,64,104,64" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="mega328-1-PORTD7" endpinid="Resistor-18-lPin" pointList="8,104,64,104" />
+
+<item itemtype="Connector" uid="Connector-25" startpinid="Resistor-18-rPin" endpinid="Q-19-base" pointList="96,104,112,104" />
+
+<item itemtype="Connector" uid="Connector-26" startpinid="Q-19-collector" endpinid="7Seg-3-pin_commona" pointList="136,88,136,72" />
+
+<item itemtype="Connector" uid="Connector-27" startpinid="Q-19-emiter" endpinid="Ground-20-Gnd" pointList="136,120,136,128" />
+
+<item itemtype="Connector" uid="Connector-28" startpinid="Q-21-collector" endpinid="7Seg-3-pin_commonb" pointList="168,88,168,72" />
+
+<item itemtype="Connector" uid="Connector-29" startpinid="Q-21-emiter" endpinid="Ground-22-Gnd" pointList="168,120,168,128" />
+
+<item itemtype="Connector" uid="Connector-30" startpinid="Q-21-base" endpinid="Resistor-23-lPin" pointList="192,104,208,104" />
+
+<item itemtype="Connector" uid="Connector-31" startpinid="mega328-1-PORTB0" endpinid="Resistor-23-rPin" pointList="8,112,16,112,16,168,256,168,256,104,240,104" />
+
+<item itemtype="Connector" uid="Connector-33" startpinid="KeyPad-32-Pin0" endpinid="mega328-1-PORTC5" pointList="-184,-12,-64,-12,-64,8,-40,8" />
+
+<item itemtype="Connector" uid="Connector-34" startpinid="KeyPad-32-Pin1" endpinid="mega328-1-PORTC4" pointList="-184,4,-80,4,-80,16,-40,16" />
+
+<item itemtype="Connector" uid="Connector-36" startpinid="KeyPad-32-Pin2" endpinid="Node-35-0" pointList="-184,20,-152,20" />
+
+<item itemtype="Connector" uid="Connector-37" startpinid="Node-35-1" endpinid="mega328-1-PORTC3" pointList="-152,20,-96,20,-96,24,-40,24" />
+
+<item itemtype="Connector" uid="Connector-39" startpinid="KeyPad-32-Pin3" endpinid="Node-38-0" pointList="-184,36,-120,36" />
+
+<item itemtype="Connector" uid="Connector-40" startpinid="Node-38-1" endpinid="mega328-1-PORTC2" pointList="-120,36,-104,36,-104,32,-40,32" />
+
+<item itemtype="Connector" uid="Connector-41" startpinid="KeyPad-32-Pin4" endpinid="mega328-1-PORTB1" pointList="-232,52,-232,112,-40,112" />
+
+<item itemtype="Connector" uid="Connector-42" startpinid="KeyPad-32-Pin5" endpinid="mega328-1-PORTB2" pointList="-216,52,-216,104,-40,104" />
+
+<item itemtype="Connector" uid="Connector-43" startpinid="KeyPad-32-Pin6" endpinid="mega328-1-PORTB3" pointList="-200,52,-200,96,-40,96" />
+
+<item itemtype="Connector" uid="Connector-47" startpinid="Node-35-2" endpinid="Push-44-pinP0" pointList="-152,20,-152,44" />
+
+<item itemtype="Connector" uid="Connector-48" startpinid="Node-38-2" endpinid="Push-45-pinP0" pointList="-120,36,-120,44" />
+
+<item itemtype="Connector" uid="Connector-49" startpinid="Push-44-switch0pinN" endpinid="Node-46-0" pointList="-152,76,-152,88,-120,88" />
+
+<item itemtype="Connector" uid="Connector-50" startpinid="Push-45-switch0pinN" endpinid="Node-46-1" pointList="-120,76,-120,88" />
+
+<item itemtype="Connector" uid="Connector-51" startpinid="Node-46-2" endpinid="mega328-1-PORTB4" pointList="-120,88,-40,88" />
+
+</circuit>

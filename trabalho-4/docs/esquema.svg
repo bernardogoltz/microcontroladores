@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <rect width="960" height="560" fill="#ffffff"/>
+  <style>
+    .w { stroke:#1f2937; stroke-width:1.6; fill:none }
+    .row { stroke:#2563eb; stroke-width:1.8; fill:none }
+    .col { stroke:#16a34a; stroke-width:1.8; fill:none }
+    .seg { stroke:#dc2626; stroke-width:1.6; fill:none }
+    .en  { stroke:#9333ea; stroke-width:1.8; fill:none }
+    .pin { font-size:12px; fill:#111827 }
+    .lbl { font-size:12px; fill:#4b5563 }
+    .t   { font-size:15px; font-weight:bold; fill:#111827 }
+  </style>
+
+  <!-- ATmega328P -->
+  <rect x="350" y="60" width="170" height="440" rx="6" fill="#f3f4f6" stroke="#111827" stroke-width="2"/>
+  <text x="435" y="270" text-anchor="middle" class="t">ATmega328P</text>
+  <text x="435" y="290" text-anchor="middle" class="lbl">16 MHz</text>
+
+  <!-- pinos do lado esquerdo: entradas analogicas e alimentacao do ADC -->
+  <g class="pin">
+    <text x="358" y="114">PC0 / ADC0</text><text x="358" y="154">PC1 / ADC1</text>
+    <text x="358" y="194">PC2 / ADC2</text><text x="358" y="234">PC3 / ADC3</text>
+    <text x="358" y="354">AVCC</text><text x="358" y="404">AREF</text>
+  </g>
+
+  <!-- 4 sensores: transmissores 0..5 V (potenciometros na simulacao) -->
+  <text x="40" y="44" class="t">4 sensores de temperatura</text>
+  <text x="40" y="62" class="lbl">saída 0–5 V = 0–100 °C (50 mV/°C)</text>
+  <g fill="#fff" stroke="#1f2937" stroke-width="1.4">
+    <rect x="130" y="96" width="80" height="28" rx="4"/>
+    <rect x="130" y="136" width="80" height="28" rx="4"/>
+    <rect x="130" y="176" width="80" height="28" rx="4"/>
+    <rect x="130" y="216" width="80" height="28" rx="4"/>
+  </g>
+  <g class="pin" text-anchor="middle">
+    <text x="170" y="114">Sensor 1</text><text x="170" y="154">Sensor 2</text>
+    <text x="170" y="194">Sensor 3</text><text x="170" y="234">Sensor 4</text>
+  </g>
+  <path class="row" d="M95 104 H130 M95 144 H130 M95 184 H130 M95 224 H130"/>
+  <path class="w" d="M95 116 H130 M95 156 H130 M95 196 H130 M95 236 H130"/>
+  <g class="lbl" text-anchor="end">
+    <text x="90" y="108">+5 V</text><text x="90" y="120">GND</text>
+    <text x="90" y="148">+5 V</text><text x="90" y="160">GND</text>
+    <text x="90" y="188">+5 V</text><text x="90" y="200">GND</text>
+    <text x="90" y="228">+5 V</text><text x="90" y="240">GND</text>
+  </g>
+  <path class="col" d="M210 110 H350 M210 150 H350 M210 190 H350 M210 230 H350"/>
+  <text x="225" y="102" class="lbl">Vout (analógico)</text>
+
+  <!-- AVCC e AREF -->
+  <path class="row" d="M200 350 H350"/>
+  <text x="195" y="354" class="lbl" text-anchor="end">+5 V</text>
+  <text x="215" y="342" class="lbl">referência do ADC</text>
+  <path class="w" d="M350 400 H300 V412 M288 412 H312 M288 418 H312 M300 418 V432 M290 432 H310 M294 437 H306"/>
+  <text x="200" y="392" class="lbl">AREF: 100 nF ao GND</text>
+  <text x="40" y="470" class="lbl">Referência: AVcc (REFS0 = 1). No SimulIDE o pino AREF</text>
+  <text x="40" y="486" class="lbl">também vai a 5 V (ver README).</text>
+
+  <!-- pinos do lado direito: segmentos e habilitacao -->
+  <g class="pin" text-anchor="end">
+    <text x="512" y="94">PD0</text><text x="512" y="124">PD1</text>
+    <text x="512" y="154">PD2</text><text x="512" y="184">PD3</text>
+    <text x="512" y="214">PD4</text><text x="512" y="244">PD5</text>
+    <text x="512" y="274">PD6</text>
+    <text x="512" y="384">PD7</text><text x="512" y="444">PB0</text>
+  </g>
+
+  <!-- segmentos com resistores -->
+  <g>
+    <path class="seg" d="M520 90 H560 M590 90 H700 M520 120 H560 M590 120 H700 M520 150 H560 M590 150 H700 M520 180 H560 M590 180 H700 M520 210 H560 M590 210 H700 M520 240 H560 M590 240 H700 M520 270 H560 M590 270 H700"/>
+    <g fill="#fff" stroke="#1f2937" stroke-width="1.4">
+      <rect x="560" y="84" width="30" height="12"/><rect x="560" y="114" width="30" height="12"/>
+      <rect x="560" y="144" width="30" height="12"/><rect x="560" y="174" width="30" height="12"/>
+      <rect x="560" y="204" width="30" height="12"/><rect x="560" y="234" width="30" height="12"/>
+      <rect x="560" y="264" width="30" height="12"/>
+    </g>
+    <text x="575" y="72" text-anchor="middle" class="lbl">7 × 220 Ω</text>
+    <g class="pin">
+      <text x="604" y="86">a</text><text x="604" y="116">b</text><text x="604" y="146">c</text>
+      <text x="604" y="176">d</text><text x="604" y="206">e</text><text x="604" y="236">f</text>
+      <text x="604" y="266">g</text>
+    </g>
+    <!-- barramento de segmentos ligado aos dois displays -->
+    <path class="seg" d="M700 90 V270"/>
+    <path class="seg" stroke-width="3" d="M700 180 H730"/>
+    <text x="712" y="172" class="lbl">a..g</text>
+  </g>
+
+  <!-- displays -->
+  <g>
+    <rect x="740" y="80" width="80" height="140" rx="6" fill="#111" />
+    <rect x="830" y="80" width="80" height="140" rx="6" fill="#111" />
+    <g fill="#ef4444">
+      <rect x="760" y="96" width="40" height="8" rx="3"/><rect x="796" y="104" width="8" height="44" rx="3"/><rect x="760" y="146" width="40" height="8" rx="3"/><rect x="756" y="152" width="8" height="44" rx="3"/><rect x="760" y="196" width="40" height="8" rx="3"/>
+      <rect x="850" y="96" width="40" height="8" rx="3"/><rect x="846" y="104" width="8" height="44" rx="3"/><rect x="850" y="146" width="40" height="8" rx="3"/><rect x="886" y="152" width="8" height="44" rx="3"/><rect x="850" y="196" width="40" height="8" rx="3"/>
+    </g>
+    <path class="seg" stroke-width="3" d="M730 180 H740 M730 180 V232 H870 V220"/>
+    <text x="780" y="248" text-anchor="middle" class="lbl">dezenas</text>
+    <text x="870" y="248" text-anchor="middle" class="lbl">unidades</text>
+    <text x="800" y="50" text-anchor="middle" class="t">2 × display 7 seg (catodo comum)</text>
+  </g>
+
+  <!-- transistores de habilitacao -->
+  <g>
+    <path class="en" d="M520 380 H580 M610 380 H650"/>
+    <path class="en" d="M520 440 H580 M610 440 H650"/>
+    <g fill="#fff" stroke="#1f2937" stroke-width="1.4">
+      <rect x="580" y="374" width="30" height="12"/><rect x="580" y="434" width="30" height="12"/>
+    </g>
+    <text x="595" y="366" text-anchor="middle" class="lbl">1 kΩ</text>
+    <circle cx="672" cy="380" r="22" fill="#fff" stroke="#1f2937" stroke-width="1.6"/>
+    <circle cx="672" cy="440" r="22" fill="#fff" stroke="#1f2937" stroke-width="1.6"/>
+    <text x="672" y="384" text-anchor="middle" class="pin">Q1</text>
+    <text x="672" y="444" text-anchor="middle" class="pin">Q2</text>
+    <text x="702" y="456" class="lbl">Q1, Q2: NPN BC547</text>
+    <text x="702" y="472" class="lbl">emissor no GND</text>
+    <!-- coletores aos catodos -->
+    <path class="w" d="M684 362 V340 H780 V220"/>
+    <path class="w" d="M690 426 V420 H900 V220"/>
+    <text x="788" y="334" class="lbl">K dezenas</text>
+    <text x="820" y="414" class="lbl">K unidades</text>
+    <!-- emissores ao GND -->
+    <path class="w" d="M672 402 V410 M660 410 H684"/>
+    <path class="w" d="M672 462 V472 M660 472 H684"/>
+  </g>
+
+  <text x="40" y="530" class="lbl">Multiplexação: Timer0 a cada 2,5 ms acende um display por vez. A cada 250 ms o programa lê ADC0–ADC3 e mostra a média em °C.</text>
+</svg>

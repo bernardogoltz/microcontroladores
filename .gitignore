@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# grafo local do code-review-graph (caminhos absolutos)
+.code-review-graph/
+
+# saídas extras do avra (o .hex de build/ continua versionado)
+*.obj
+*.cof
+*.eep.hex
+*.lst
+*.map
+
+# instruções de trabalho da IA (não fazem parte da entrega)
+trabalho-3/PROMPT.md
+
+# editores / SO
+.vscode/
+.idea/
+*.swp
+.DS_Store

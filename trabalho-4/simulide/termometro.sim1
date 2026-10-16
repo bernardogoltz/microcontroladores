@@ -1,0 +1,159 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="MCU" CircId="mega328-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="-1" vflip="1" label="ATmega328P" idLabPos="-36,-20" labelrot="0" valLabPos="0,0" valLabRot="0" Frequency="16 MHz" Program="../build/termometro.hex" Auto_Load="false" saveEepr="false" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" SerialMon="-1" />
+
+<item itemtype="ResistorDip" CircId="ResistorDip-2" mainComp="false" Show_id="false" Show_Val="false" Pos="72,40" rotation="0" hflip="1" vflip="1" label="ResistorDip-2" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="220 Ω" Size="7" PullUp="false" PuVolt="5 V" />
+
+<item itemtype="Seven Segment" CircId="7Seg-3" mainComp="false" Show_id="true" Show_Val="false" Pos="128,40" rotation="0" hflip="1" vflip="1" label="Display" idLabPos="0,-44" labelrot="0" valLabPos="0,0" valLabRot="0" Color="Red" NumDisplays="2 _7seg" Vertical_Pins="false" CommonCathode="true" Threshold="2.4 V" MaxCurrent="0.006 A" Resistance="1 Ω" />
+
+<item itemtype="Resistor" CircId="Resistor-18" mainComp="false" Show_id="false" Show_Val="true" Pos="80,104" rotation="0" hflip="1" vflip="1" label="Resistor-18" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="1 kΩ" />
+
+<item itemtype="BJT" CircId="Q-19" mainComp="false" Show_id="false" Show_Val="false" Pos="128,104" rotation="0" hflip="1" vflip="1" label="Q1" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" PNP="false" Gain="100" Vcrit="0.670736 V" />
+
+<item itemtype="Ground" CircId="Ground-20" mainComp="false" Show_id="false" Show_Val="false" Pos="136,144" rotation="0" hflip="1" vflip="1" label="Ground-20" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="BJT" CircId="Q-21" mainComp="false" Show_id="false" Show_Val="false" Pos="176,104" rotation="0" hflip="-1" vflip="1" label="Q2" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" PNP="false" Gain="100" Vcrit="0.670736 V" />
+
+<item itemtype="Ground" CircId="Ground-22" mainComp="false" Show_id="false" Show_Val="false" Pos="168,144" rotation="0" hflip="1" vflip="1" label="Ground-22" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Resistor" CircId="Resistor-23" mainComp="false" Show_id="false" Show_Val="true" Pos="224,104" rotation="0" hflip="1" vflip="1" label="Resistor-23" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="1 kΩ" />
+
+<item itemtype="Potentiometer" CircId="Pot-32" mainComp="false" Show_id="true" Show_Val="false" Pos="-296,-40" rotation="0" hflip="1" vflip="1" label="Sensor 1" idLabPos="-36,-60" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="2200 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-33" mainComp="false" Show_id="false" Show_Val="false" Pos="-280,-72" rotation="90" hflip="1" vflip="1" label="Rail-33" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-34" mainComp="false" Show_id="false" Show_Val="false" Pos="-312,-8" rotation="0" hflip="1" vflip="1" label="Ground-34" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-37" mainComp="false" Pos="-296,-8" />
+
+<item itemtype="Probe" CircId="Probe-38" mainComp="false" Show_id="false" Show_Val="true" Pos="-272,-24" rotation="-45" hflip="1" vflip="1" label="Probe-38" idLabPos="16,-16" labelrot="45" valLabPos="10,-18" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Potentiometer" CircId="Pot-42" mainComp="false" Show_id="true" Show_Val="false" Pos="-232,-40" rotation="0" hflip="1" vflip="1" label="Sensor 2" idLabPos="-36,-60" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="2400 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-43" mainComp="false" Show_id="false" Show_Val="false" Pos="-216,-72" rotation="90" hflip="1" vflip="1" label="Rail-43" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-44" mainComp="false" Show_id="false" Show_Val="false" Pos="-248,-8" rotation="0" hflip="1" vflip="1" label="Ground-44" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-47" mainComp="false" Pos="-232,-8" />
+
+<item itemtype="Probe" CircId="Probe-48" mainComp="false" Show_id="false" Show_Val="true" Pos="-208,-24" rotation="-45" hflip="1" vflip="1" label="Probe-48" idLabPos="16,-16" labelrot="45" valLabPos="10,-18" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Potentiometer" CircId="Pot-52" mainComp="false" Show_id="true" Show_Val="false" Pos="-168,-40" rotation="0" hflip="1" vflip="1" label="Sensor 3" idLabPos="-36,-60" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="2600 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-53" mainComp="false" Show_id="false" Show_Val="false" Pos="-152,-72" rotation="90" hflip="1" vflip="1" label="Rail-53" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-54" mainComp="false" Show_id="false" Show_Val="false" Pos="-184,-8" rotation="0" hflip="1" vflip="1" label="Ground-54" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-57" mainComp="false" Pos="-168,-8" />
+
+<item itemtype="Probe" CircId="Probe-58" mainComp="false" Show_id="false" Show_Val="true" Pos="-144,-24" rotation="-45" hflip="1" vflip="1" label="Probe-58" idLabPos="16,-16" labelrot="45" valLabPos="10,-18" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Potentiometer" CircId="Pot-62" mainComp="false" Show_id="true" Show_Val="false" Pos="-104,-40" rotation="0" hflip="1" vflip="1" label="Sensor 4" idLabPos="-36,-60" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="2800 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-63" mainComp="false" Show_id="false" Show_Val="false" Pos="-88,-72" rotation="90" hflip="1" vflip="1" label="Rail-63" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-64" mainComp="false" Show_id="false" Show_Val="false" Pos="-120,-8" rotation="0" hflip="1" vflip="1" label="Ground-64" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-67" mainComp="false" Pos="-104,-8" />
+
+<item itemtype="Probe" CircId="Probe-68" mainComp="false" Show_id="false" Show_Val="true" Pos="-80,-24" rotation="-45" hflip="1" vflip="1" label="Probe-68" idLabPos="16,-16" labelrot="45" valLabPos="10,-18" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Rail" CircId="Rail-72" mainComp="false" Show_id="false" Show_Val="false" Pos="-80,72" rotation="0" hflip="1" vflip="1" label="Rail-72" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Node" CircId="Node-73" mainComp="false" Pos="-56,72" />
+
+<item itemtype="TextComponent" CircId="Text-77" mainComp="false" Show_id="false" Show_Val="false" Pos="52,-8" rotation="0" hflip="1" vflip="1" label="Text-77" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="0 _px" Border="0 _px" Color="#ffffdc" Opacity="0" Font="Helvetica [Cronyx]" Font_Color="#800000" Font_Size="8 _px" Fixed_Width="false" Text="7 x 220 Ω" />
+
+<item itemtype="TextComponent" CircId="Text-78" mainComp="false" Show_id="false" Show_Val="false" Pos="-296,-152" rotation="0" hflip="1" vflip="1" label="Text-78" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 4 - Media de 4 sensores de temperatura&#xa;ATmega328P @ 16 MHz - sensores em ADC0..ADC3 (0..5 V para 0..100 C)&#xa;Display: media de 10 a 55 C; Lo abaixo, Hi acima" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="mega328-1-PORTD0" endpinid="ResistorDip-2-resistor0-ePin0" pointList="8,16,56,16" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="ResistorDip-2-resistor0-ePin1" endpinid="7Seg-3-pin_a" pointList="88,16,104,16" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="mega328-1-PORTD1" endpinid="ResistorDip-2-resistor1-ePin2" pointList="8,24,56,24" />
+
+<item itemtype="Connector" uid="Connector-7" startpinid="ResistorDip-2-resistor1-ePin3" endpinid="7Seg-3-pin_b" pointList="88,24,104,24" />
+
+<item itemtype="Connector" uid="Connector-8" startpinid="mega328-1-PORTD2" endpinid="ResistorDip-2-resistor2-ePin4" pointList="8,32,56,32" />
+
+<item itemtype="Connector" uid="Connector-9" startpinid="ResistorDip-2-resistor2-ePin5" endpinid="7Seg-3-pin_c" pointList="88,32,104,32" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="mega328-1-PORTD3" endpinid="ResistorDip-2-resistor3-ePin6" pointList="8,40,56,40" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="ResistorDip-2-resistor3-ePin7" endpinid="7Seg-3-pin_d" pointList="88,40,104,40" />
+
+<item itemtype="Connector" uid="Connector-12" startpinid="mega328-1-PORTD4" endpinid="ResistorDip-2-resistor4-ePin8" pointList="8,48,56,48" />
+
+<item itemtype="Connector" uid="Connector-13" startpinid="ResistorDip-2-resistor4-ePin9" endpinid="7Seg-3-pin_e" pointList="88,48,104,48" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="mega328-1-PORTD5" endpinid="ResistorDip-2-resistor5-ePin10" pointList="8,88,24,88,24,56,56,56" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="ResistorDip-2-resistor5-ePin11" endpinid="7Seg-3-pin_f" pointList="88,56,104,56" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="mega328-1-PORTD6" endpinid="ResistorDip-2-resistor6-ePin12" pointList="8,96,32,96,32,64,56,64" />
+
+<item itemtype="Connector" uid="Connector-17" startpinid="ResistorDip-2-resistor6-ePin13" endpinid="7Seg-3-pin_g" pointList="88,64,104,64" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="mega328-1-PORTD7" endpinid="Resistor-18-lPin" pointList="8,104,64,104" />
+
+<item itemtype="Connector" uid="Connector-25" startpinid="Resistor-18-rPin" endpinid="Q-19-base" pointList="96,104,112,104" />
+
+<item itemtype="Connector" uid="Connector-26" startpinid="Q-19-collector" endpinid="7Seg-3-pin_commona" pointList="136,88,136,72" />
+
+<item itemtype="Connector" uid="Connector-27" startpinid="Q-19-emiter" endpinid="Ground-20-Gnd" pointList="136,120,136,128" />
+
+<item itemtype="Connector" uid="Connector-28" startpinid="Q-21-collector" endpinid="7Seg-3-pin_commonb" pointList="168,88,168,72" />
+
+<item itemtype="Connector" uid="Connector-29" startpinid="Q-21-emiter" endpinid="Ground-22-Gnd" pointList="168,120,168,128" />
+
+<item itemtype="Connector" uid="Connector-30" startpinid="Q-21-base" endpinid="Resistor-23-lPin" pointList="192,104,208,104" />
+
+<item itemtype="Connector" uid="Connector-31" startpinid="mega328-1-PORTB0" endpinid="Resistor-23-rPin" pointList="8,112,16,112,16,168,256,168,256,104,240,104" />
+
+<item itemtype="Connector" uid="Connector-35" startpinid="Rail-33-outnod" endpinid="Pot-32-PinB" pointList="-280,-56,-280,-40" />
+
+<item itemtype="Connector" uid="Connector-36" startpinid="Pot-32-PinA" endpinid="Ground-34-Gnd" pointList="-312,-40,-312,-24" />
+
+<item itemtype="Connector" uid="Connector-39" startpinid="Pot-32-PinM" endpinid="Node-37-0" pointList="-296,-24,-296,-8" />
+
+<item itemtype="Connector" uid="Connector-40" startpinid="Node-37-1" endpinid="Probe-38-inpin" pointList="-296,-8,-288,-8" />
+
+<item itemtype="Connector" uid="Connector-41" startpinid="Node-37-2" endpinid="mega328-1-PORTC0" pointList="-296,-8,-296,48,-40,48" />
+
+<item itemtype="Connector" uid="Connector-45" startpinid="Rail-43-outnod" endpinid="Pot-42-PinB" pointList="-216,-56,-216,-40" />
+
+<item itemtype="Connector" uid="Connector-46" startpinid="Pot-42-PinA" endpinid="Ground-44-Gnd" pointList="-248,-40,-248,-24" />
+
+<item itemtype="Connector" uid="Connector-49" startpinid="Pot-42-PinM" endpinid="Node-47-0" pointList="-232,-24,-232,-8" />
+
+<item itemtype="Connector" uid="Connector-50" startpinid="Node-47-1" endpinid="Probe-48-inpin" pointList="-232,-8,-224,-8" />
+
+<item itemtype="Connector" uid="Connector-51" startpinid="Node-47-2" endpinid="mega328-1-PORTC1" pointList="-232,-8,-232,40,-40,40" />
+
+<item itemtype="Connector" uid="Connector-55" startpinid="Rail-53-outnod" endpinid="Pot-52-PinB" pointList="-152,-56,-152,-40" />
+
+<item itemtype="Connector" uid="Connector-56" startpinid="Pot-52-PinA" endpinid="Ground-54-Gnd" pointList="-184,-40,-184,-24" />
+
+<item itemtype="Connector" uid="Connector-59" startpinid="Pot-52-PinM" endpinid="Node-57-0" pointList="-168,-24,-168,-8" />
+
+<item itemtype="Connector" uid="Connector-60" startpinid="Node-57-1" endpinid="Probe-58-inpin" pointList="-168,-8,-160,-8" />
+
+<item itemtype="Connector" uid="Connector-61" startpinid="Node-57-2" endpinid="mega328-1-PORTC2" pointList="-168,-8,-168,32,-40,32" />
+
+<item itemtype="Connector" uid="Connector-65" startpinid="Rail-63-outnod" endpinid="Pot-62-PinB" pointList="-88,-56,-88,-40" />
+
+<item itemtype="Connector" uid="Connector-66" startpinid="Pot-62-PinA" endpinid="Ground-64-Gnd" pointList="-120,-40,-120,-24" />
+
+<item itemtype="Connector" uid="Connector-69" startpinid="Pot-62-PinM" endpinid="Node-67-0" pointList="-104,-24,-104,-8" />
+
+<item itemtype="Connector" uid="Connector-70" startpinid="Node-67-1" endpinid="Probe-68-inpin" pointList="-104,-8,-96,-8" />
+
+<item itemtype="Connector" uid="Connector-71" startpinid="Node-67-2" endpinid="mega328-1-PORTC3" pointList="-104,-8,-104,24,-40,24" />
+
+<item itemtype="Connector" uid="Connector-74" startpinid="Rail-72-outnod" endpinid="Node-73-0" pointList="-64,72,-56,72" />
+
+<item itemtype="Connector" uid="Connector-75" startpinid="Node-73-1" endpinid="mega328-1-PORTV0" pointList="-56,72,-40,72" />
+
+<item itemtype="Connector" uid="Connector-76" startpinid="Node-73-2" endpinid="mega328-1-PORTV1" pointList="-56,72,-56,64,-40,64" />
+
+</circuit>

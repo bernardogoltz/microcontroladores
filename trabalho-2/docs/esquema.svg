@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <rect width="960" height="560" fill="#ffffff"/>
+  <style>
+    .w { stroke:#1f2937; stroke-width:1.6; fill:none }
+    .row { stroke:#2563eb; stroke-width:1.8; fill:none }
+    .col { stroke:#16a34a; stroke-width:1.8; fill:none }
+    .seg { stroke:#dc2626; stroke-width:1.6; fill:none }
+    .en  { stroke:#9333ea; stroke-width:1.8; fill:none }
+    .pin { font-size:12px; fill:#111827 }
+    .lbl { font-size:12px; fill:#4b5563 }
+    .t   { font-size:15px; font-weight:bold; fill:#111827 }
+  </style>
+
+  <!-- ATmega328P -->
+  <rect x="350" y="60" width="170" height="440" rx="6" fill="#f3f4f6" stroke="#111827" stroke-width="2"/>
+  <text x="435" y="270" text-anchor="middle" class="t">ATmega328P</text>
+  <text x="435" y="290" text-anchor="middle" class="lbl">16 MHz</text>
+
+  <!-- pinos do lado esquerdo: linhas e colunas do teclado -->
+  <g class="pin">
+    <text x="358" y="114">PC5</text><text x="358" y="144">PC4</text>
+    <text x="358" y="174">PC3</text><text x="358" y="204">PC2</text>
+    <text x="358" y="354">PB1</text><text x="358" y="384">PB2</text>
+    <text x="358" y="414">PB3</text><text x="358" y="444">PB4</text>
+  </g>
+
+  <!-- teclado 4x4 -->
+  <text x="40" y="44" class="t">Teclado 4x4</text>
+  <g font-size="15" font-weight="bold" fill="#111827" text-anchor="middle">
+    <rect x="40" y="90" width="200" height="130" rx="6" fill="#f9fafb" stroke="#9ca3af"/>
+    <text x="65" y="115">7</text><text x="115" y="115">8</text><text x="165" y="115">9</text>
+    <text x="65" y="145">4</text><text x="115" y="145">5</text><text x="165" y="145">6</text>
+    <text x="65" y="175">1</text><text x="115" y="175">2</text><text x="165" y="175">3</text><text x="215" y="175">+</text>
+    <text x="65" y="205">C</text><text x="115" y="205">0</text><text x="165" y="205">=</text><text x="215" y="205">−</text>
+  </g>
+  <!-- linhas (PB0..PB3) -->
+  <path class="row" d="M240 110 H350 M240 140 H350 M240 170 H350 M240 200 H350"/>
+  <text x="250" y="82" class="lbl">linhas (saída)</text>
+  <!-- colunas (PC2..PC5) -->
+  <path class="col" d="M65 220 V350 H350 M115 220 V380 H350 M165 220 V410 H350 M215 220 V440 H350"/>
+  <text x="80" y="475" class="lbl">colunas (entrada, pull-up interno)</text>
+
+  <!-- pinos do lado direito: segmentos e habilitacao -->
+  <g class="pin" text-anchor="end">
+    <text x="512" y="94">PD0</text><text x="512" y="124">PD1</text>
+    <text x="512" y="154">PD2</text><text x="512" y="184">PD3</text>
+    <text x="512" y="214">PD4</text><text x="512" y="244">PD5</text>
+    <text x="512" y="274">PD6</text>
+    <text x="512" y="384">PD7</text><text x="512" y="444">PB0</text>
+  </g>
+
+  <!-- segmentos com resistores -->
+  <g>
+    <path class="seg" d="M520 90 H560 M590 90 H700 M520 120 H560 M590 120 H700 M520 150 H560 M590 150 H700 M520 180 H560 M590 180 H700 M520 210 H560 M590 210 H700 M520 240 H560 M590 240 H700 M520 270 H560 M590 270 H700"/>
+    <g fill="#fff" stroke="#1f2937" stroke-width="1.4">
+      <rect x="560" y="84" width="30" height="12"/><rect x="560" y="114" width="30" height="12"/>
+      <rect x="560" y="144" width="30" height="12"/><rect x="560" y="174" width="30" height="12"/>
+      <rect x="560" y="204" width="30" height="12"/><rect x="560" y="234" width="30" height="12"/>
+      <rect x="560" y="264" width="30" height="12"/>
+    </g>
+    <text x="575" y="72" text-anchor="middle" class="lbl">7 × 220 Ω</text>
+    <g class="pin">
+      <text x="604" y="86">a</text><text x="604" y="116">b</text><text x="604" y="146">c</text>
+      <text x="604" y="176">d</text><text x="604" y="206">e</text><text x="604" y="236">f</text>
+      <text x="604" y="266">g</text>
+    </g>
+    <!-- barramento de segmentos ligado aos dois displays -->
+    <path class="seg" d="M700 90 V270"/>
+    <path class="seg" stroke-width="3" d="M700 180 H730"/>
+    <text x="712" y="172" class="lbl">a..g</text>
+  </g>
+
+  <!-- displays -->
+  <g>
+    <rect x="740" y="80" width="80" height="140" rx="6" fill="#111" />
+    <rect x="830" y="80" width="80" height="140" rx="6" fill="#111" />
+    <g fill="#ef4444">
+      <rect x="760" y="96" width="40" height="8" rx="3"/><rect x="796" y="104" width="8" height="44" rx="3"/>
+      <rect x="796" y="152" width="8" height="44" rx="3"/><rect x="760" y="196" width="40" height="8" rx="3"/>
+      <rect x="756" y="152" width="8" height="44" rx="3"/><rect x="756" y="104" width="8" height="44" rx="3"/>
+      <rect x="850" y="96" width="40" height="8" rx="3"/><rect x="886" y="104" width="8" height="44" rx="3"/>
+      <rect x="886" y="152" width="8" height="44" rx="3"/>
+    </g>
+    <path class="seg" stroke-width="3" d="M730 180 H740 M730 180 V232 H870 V220"/>
+    <text x="780" y="248" text-anchor="middle" class="lbl">dezenas</text>
+    <text x="870" y="248" text-anchor="middle" class="lbl">unidades</text>
+    <text x="800" y="50" text-anchor="middle" class="t">2 × display 7 seg (catodo comum)</text>
+  </g>
+
+  <!-- transistores de habilitacao -->
+  <g>
+    <path class="en" d="M520 380 H580 M610 380 H650"/>
+    <path class="en" d="M520 440 H580 M610 440 H650"/>
+    <g fill="#fff" stroke="#1f2937" stroke-width="1.4">
+      <rect x="580" y="374" width="30" height="12"/><rect x="580" y="434" width="30" height="12"/>
+    </g>
+    <text x="595" y="366" text-anchor="middle" class="lbl">1 kΩ</text>
+    <circle cx="672" cy="380" r="22" fill="#fff" stroke="#1f2937" stroke-width="1.6"/>
+    <circle cx="672" cy="440" r="22" fill="#fff" stroke="#1f2937" stroke-width="1.6"/>
+    <text x="672" y="384" text-anchor="middle" class="pin">Q1</text>
+    <text x="672" y="444" text-anchor="middle" class="pin">Q2</text>
+    <text x="702" y="456" class="lbl">Q1, Q2: NPN BC547</text>
+    <text x="702" y="472" class="lbl">emissor no GND</text>
+    <!-- coletores aos catodos -->
+    <path class="w" d="M684 362 V340 H780 V220"/>
+    <path class="w" d="M690 426 V420 H900 V220"/>
+    <text x="788" y="334" class="lbl">K dezenas</text>
+    <text x="820" y="414" class="lbl">K unidades</text>
+    <!-- emissores ao GND -->
+    <path class="w" d="M672 402 V410 M660 410 H684"/>
+    <path class="w" d="M672 462 V472 M660 472 H684"/>
+  </g>
+
+  <text x="40" y="530" class="lbl">Multiplexação: a interrupção do Timer0 (2,5 ms) liga um transistor por vez e coloca em PORTD o padrão do display correspondente.</text>
+</svg>

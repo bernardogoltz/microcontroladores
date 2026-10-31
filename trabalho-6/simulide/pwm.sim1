@@ -1,0 +1,57 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="MCU" CircId="mega328-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="-1" vflip="1" label="ATmega328P" idLabPos="-36,-20" labelrot="0" valLabPos="0,0" valLabRot="0" Frequency="16 MHz" Program="../build/pwm.hex" Auto_Load="false" saveEepr="false" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" SerialMon="-1" />
+
+<item itemtype="Rail" CircId="Rail-2" mainComp="false" Show_id="false" Show_Val="false" Pos="-80,72" rotation="0" hflip="1" vflip="1" label="Rail-2" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Node" CircId="Node-3" mainComp="false" Pos="-56,72" />
+
+<item itemtype="Potentiometer" CircId="Pot-7" mainComp="false" Show_id="true" Show_Val="false" Pos="-136,-8" rotation="0" hflip="1" vflip="1" label="Duty" idLabPos="-36,-60" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="5000 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-8" mainComp="false" Show_id="false" Show_Val="false" Pos="-120,-40" rotation="90" hflip="1" vflip="1" label="Rail-8" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-9" mainComp="false" Show_id="false" Show_Val="false" Pos="-152,24" rotation="0" hflip="1" vflip="1" label="Ground-9" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-12" mainComp="false" Pos="-136,24" />
+
+<item itemtype="Probe" CircId="Probe-13" mainComp="false" Show_id="false" Show_Val="true" Pos="-112,8" rotation="-45" hflip="1" vflip="1" label="Probe-13" idLabPos="16,-16" labelrot="45" valLabPos="10,-18" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Resistor" CircId="Resistor-17" mainComp="false" Show_id="false" Show_Val="true" Pos="8,152" rotation="0" hflip="1" vflip="1" label="Resistor-17" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="220 Ω" />
+
+<item itemtype="Led" CircId="Led-18" mainComp="false" Show_id="true" Show_Val="false" Pos="56,152" rotation="0" hflip="1" vflip="1" label="LED" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Color="Red" Grounded="false" Threshold="2.4 V" MaxCurrent="0.03 A" Resistance="0.6 Ω" />
+
+<item itemtype="Ground" CircId="Ground-19" mainComp="false" Show_id="false" Show_Val="false" Pos="88,176" rotation="0" hflip="1" vflip="1" label="Ground-19" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-20" mainComp="false" Pos="-48,152" />
+
+<item itemtype="Oscope" CircId="Oscope-25" mainComp="false" Show_id="false" Show_Val="false" Pos="64,256" rotation="0" hflip="1" vflip="1" label="Oscope-25" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _Px" Basic_Y="135 _Px" BufferSize="600000" connectGnd="true" InputImped="1e+07 Ω" TimDiv="50000000" TimPos="0,0,0,0," VolDiv="2,1,1,1," Tunnels=",,,," Trigger="0" Filter="0.1 V" AutoSC="4" Tracks="1" HideCh="false,false,false,false," VolPos="0,0,0,0," />
+
+<item itemtype="TextComponent" CircId="Text-27" mainComp="false" Show_id="false" Show_Val="false" Pos="-296,-128" rotation="0" hflip="1" vflip="1" label="Text-27" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 6 - PWM de 10 kHz no Timer1&#xa;ATmega328P @ 16 MHz - Fast PWM modo 14, TOP em ICR1 (1599)&#xa;OC1A (PB1): OCR1A recebe (ADC0 x 25) / 16" />
+
+<item itemtype="Connector" uid="Connector-4" startpinid="Rail-2-outnod" endpinid="Node-3-0" pointList="-64,72,-56,72" />
+
+<item itemtype="Connector" uid="Connector-5" startpinid="Node-3-1" endpinid="mega328-1-PORTV0" pointList="-56,72,-40,72" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="Node-3-2" endpinid="mega328-1-PORTV1" pointList="-56,72,-56,64,-40,64" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="Rail-8-outnod" endpinid="Pot-7-PinB" pointList="-120,-24,-120,-8" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="Pot-7-PinA" endpinid="Ground-9-Gnd" pointList="-152,-8,-152,8" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="Pot-7-PinM" endpinid="Node-12-0" pointList="-136,8,-136,24" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="Node-12-1" endpinid="Probe-13-inpin" pointList="-136,24,-128,24" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="Node-12-2" endpinid="mega328-1-PORTC0" pointList="-136,24,-136,48,-40,48" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="mega328-1-PORTB1" endpinid="Node-20-0" pointList="-40,112,-48,112,-48,152" />
+
+<item itemtype="Connector" uid="Connector-22" startpinid="Node-20-1" endpinid="Resistor-17-lPin" pointList="-48,152,-8,152" />
+
+<item itemtype="Connector" uid="Connector-23" startpinid="Resistor-17-rPin" endpinid="Led-18-lPin" pointList="24,152,40,152" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="Led-18-rPin" endpinid="Ground-19-Gnd" pointList="72,152,88,152,88,160" />
+
+<item itemtype="Connector" uid="Connector-26" startpinid="Node-20-2" endpinid="Oscope-25-Pin0" pointList="-48,152,-48,208,-24,208" />
+
+</circuit>

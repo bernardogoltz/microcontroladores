@@ -1,0 +1,59 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="MCU" CircId="mega328-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="-1" vflip="1" label="ATmega328P" idLabPos="-36,-20" labelrot="0" valLabPos="0,0" valLabRot="0" Frequency="16 MHz" Program="../build/brilho_digital.hex" Auto_Load="false" saveEepr="false" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" SerialMon="-1" />
+
+<item itemtype="Resistor" CircId="Resistor-2" mainComp="false" Show_id="false" Show_Val="true" Pos="64,96" rotation="0" hflip="1" vflip="1" label="Resistor-2" idLabPos="-16,-24" labelrot="0" valLabPos="-12,-20" valLabRot="0" ShowProp="Resistance" Resistance="220 Ω" />
+
+<item itemtype="Led" CircId="Led-3" mainComp="false" Show_id="true" Show_Val="false" Pos="120,96" rotation="0" hflip="1" vflip="1" label="LED" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Color="Red" Grounded="false" Threshold="2.4 V" MaxCurrent="0.03 A" Resistance="0.6 Ω" />
+
+<item itemtype="Ground" CircId="Ground-4" mainComp="false" Show_id="false" Show_Val="false" Pos="152,120" rotation="0" hflip="1" vflip="1" label="Ground-4" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-5" mainComp="false" Pos="40,96" />
+
+<item itemtype="Oscope" CircId="Oscope-8" mainComp="false" Show_id="false" Show_Val="false" Pos="272,176" rotation="0" hflip="1" vflip="1" label="Oscope-8" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _Px" Basic_Y="135 _Px" BufferSize="600000" connectGnd="true" InputImped="1e+07 Ω" TimDiv="200000000" TimPos="0,0,0,0," VolDiv="2,1,1,1," Tunnels=",,,," Trigger="0" Filter="0.1 V" AutoSC="4" Tracks="1" HideCh="false,false,false,false," VolPos="0,0,0,0," />
+
+<item itemtype="Rail" CircId="Rail-12" mainComp="false" Show_id="false" Show_Val="false" Pos="-56,40" rotation="90" hflip="1" vflip="1" label="Rail-12" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Node" CircId="Node-13" mainComp="false" Pos="-56,64" />
+
+<item itemtype="SwitchDip" CircId="SwitchDip-17" mainComp="false" Show_id="true" Show_Val="false" Pos="-72,176" rotation="-90" hflip="1" vflip="1" label="PB7 ... PB0" idLabPos="-28,-20" labelrot="90" valLabPos="0,0" valLabRot="0" Size="8" Exclusive="false" CommonPin="true" State="0" />
+
+<item itemtype="Ground" CircId="Ground-18" mainComp="false" Show_id="false" Show_Val="false" Pos="-112,208" rotation="0" hflip="1" vflip="1" label="Ground-18" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="TextComponent" CircId="Text-28" mainComp="false" Show_id="false" Show_Val="false" Pos="-120,-120" rotation="0" hflip="1" vflip="1" label="Text-28" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 5a - Brilho do LED por valor digital&#xa;ATmega328P @ 16 MHz - Timer0 Fast PWM em PD6 (976,6 Hz)&#xa;OCR0A recebe PINB: chave fechada vale 0, aberta vale 1" />
+
+<item itemtype="Connector" uid="Connector-6" startpinid="mega328-1-PORTD6" endpinid="Node-5-0" pointList="8,96,40,96" />
+
+<item itemtype="Connector" uid="Connector-7" startpinid="Node-5-1" endpinid="Resistor-2-lPin" pointList="40,96,48,96" />
+
+<item itemtype="Connector" uid="Connector-9" startpinid="Node-5-2" endpinid="Oscope-8-Pin0" pointList="40,96,40,128,184,128" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="Resistor-2-rPin" endpinid="Led-3-lPin" pointList="80,96,104,96" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="Led-3-rPin" endpinid="Ground-4-Gnd" pointList="136,96,152,96,152,104" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="Rail-12-outnod" endpinid="Node-13-0" pointList="-56,56,-56,64" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="Node-13-1" endpinid="mega328-1-PORTV1" pointList="-56,64,-40,64" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="Node-13-2" endpinid="mega328-1-PORTV0" pointList="-56,64,-56,72,-40,72" />
+
+<item itemtype="Connector" uid="Connector-19" startpinid="SwitchDip-17-switch0-pinP" endpinid="Ground-18-Gnd" pointList="-96,184,-112,184,-112,192" />
+
+<item itemtype="Connector" uid="Connector-20" startpinid="mega328-1-PORTB7" endpinid="SwitchDip-17-switch0-pinN" pointList="8,80,32,80,32,-32,-96,-32,-96,160" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="mega328-1-PORTB6" endpinid="SwitchDip-17-switch1-pinN" pointList="8,72,24,72,24,-24,-88,-24,-88,160" />
+
+<item itemtype="Connector" uid="Connector-22" startpinid="mega328-1-PORTB5" endpinid="SwitchDip-17-switch2-pinN" pointList="-40,80,-80,80,-80,160" />
+
+<item itemtype="Connector" uid="Connector-23" startpinid="mega328-1-PORTB4" endpinid="SwitchDip-17-switch3-pinN" pointList="-40,88,-72,88,-72,160" />
+
+<item itemtype="Connector" uid="Connector-24" startpinid="mega328-1-PORTB3" endpinid="SwitchDip-17-switch4-pinN" pointList="-40,96,-64,96,-64,160" />
+
+<item itemtype="Connector" uid="Connector-25" startpinid="mega328-1-PORTB2" endpinid="SwitchDip-17-switch5-pinN" pointList="-40,104,-56,104,-56,160" />
+
+<item itemtype="Connector" uid="Connector-26" startpinid="mega328-1-PORTB1" endpinid="SwitchDip-17-switch6-pinN" pointList="-40,112,-48,112,-48,160" />
+
+<item itemtype="Connector" uid="Connector-27" startpinid="mega328-1-PORTB0" endpinid="SwitchDip-17-switch7-pinN" pointList="8,112,16,112,16,136,-40,136,-40,160" />
+
+</circuit>

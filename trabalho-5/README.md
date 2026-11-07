@@ -2,36 +2,29 @@
 
 Trabalho 5 de Microcontroladores (2026/2) · Bernardo Ivo Goltz (202112108)
 
-Controle do brilho de um LED por PWM no ATmega328P a 16 MHz, simulado no SimulIDE 1.1.0. No 5a o duty cycle vem de um valor digital de 8 bits lido em oito chaves; no 5b, de um potenciômetro lido pelo ADC.
+PWM no Timer0 do ATmega328P a 16 MHz, simulado no SimulIDE, controla o brilho de um LED. No 5a o duty cycle é um byte lido em oito chaves. No 5b vem do potenciômetro, pelo ADC.
 
-![Brilho do LED simulado no SimulIDE: 5a com as chaves e depois 5b com o potenciômetro](docs/simulide.gif)
+Os trabalhos da disciplina, com circuito, código e simulação, estão em https://github.com/bernardogoltz/microcontroladores
+
+![Brilho do LED no SimulIDE](docs/simulide.gif)
 
 ## 5a: brilho por valor digital
 
 [Circuito SimulIDE](simulide/brilho_digital.sim1)
 
-### Hardware
+As chaves estão em PB0–PB7, cada uma para o GND, com pull-up interno. Fechada lê 0, aberta lê 1, e a da esquerda é o bit 7. O LED sai em PD6 (OC0A), com resistor de 220 Ω e o catodo no GND. O osciloscópio fica em 200 µs/div. AVcc e AREF em 5 V.
 
-| Pino | Ligação |
-|---|---|
-| PB0–PB7 | DIP de 8 chaves para o GND, pull-up interno ligado |
-| PD6 (OC0A) | resistor de 220 Ω em série com o LED, catodo no GND; osciloscópio a 200 µs/div |
-| AVcc, AREF | 5 V |
+A entrada não cabe na porta D porque PD6 é a saída do PWM. No SimulIDE o cristal externo está desligado, então PB6 e PB7 entram como pino normal. Num Arduino Uno esses dois pinos são do cristal.
 
-Chave fechada põe o pino em 0 e chave aberta deixa o pull-up em 1. A chave da esquerda é o bit 7. O byte lido em `PINB` vai direto para `OCR0A`, sem inverter: com todas as chaves fechadas (0) o LED apaga, com todas abertas (255) ele fica aceso o tempo todo. A entrada de 8 bits é a porta B porque PD6 é a saída do PWM. No SimulIDE, com o oscilador externo desligado (`Ext_Osc="false"`), PB6 e PB7 funcionam como GPIO; numa placa com cristal, como o Arduino Uno, esses dois pinos são do cristal.
-
-### Timer0
-
-Fast PWM de 8 bits (modo 3, `WGM01 = WGM00 = 1`, `WGM02 = 0`), TOP = `0xFF`, saída não inversora em OC0A (`COM0A1 = 1`) e prescaler 64 (`CS01 = CS00 = 1`):
+O Timer0 está em Fast PWM de 8 bits, modo 3 (`WGM01` e `WGM00` em 1, `WGM02` em 0), TOP = `0xFF`, saída não inversora em OC0A (`COM0A1` = 1) e prescaler 64 (`CS01` e `CS00` em 1).
 
 ```
-f_PWM = f_clk / (N × 256) = 16 000 000 / (64 × 256) = 976,6 Hz
-duty  = (OCR0A + 1) / 256
+f_PWM = 16 000 000 / (64 × 256) = 976,6 Hz
 ```
 
-No Fast PWM a saída sobe no início do período e desce quando o contador passa de `OCR0A`, por isso o `+ 1`. Com `OCR0A = 0` sobra um pulso de 4 µs a cada 1,024 ms (0,4 %), e o LED fica apagado na prática; com 255 ele fica aceso o período inteiro.
+O laço copia `PINB` para `OCR0A`. Com as oito chaves fechadas o LED apaga. Com todas abertas (255) ele fica aceso o período inteiro. Com `OCR0A` em 0 ainda sai um pulso de 4 µs a cada 1,024 ms (0,4%). O LED não acende.
 
-### Código
+## Código do 5a
 
 [`src/brilho_digital.asm`](src/brilho_digital.asm)
 
@@ -93,23 +86,13 @@ laco:
 
 [Circuito SimulIDE](simulide/brilho_adc.sim1)
 
-### Hardware
+O cursor de um potenciômetro de 10 kΩ vai em PC0 (ADC0). Os extremos ficam em 5 V e GND. O LED continua em PD6, igual ao 5a. No SimulIDE, AVcc e AREF estão em 5 V. Na placa o AREF não vai nos 5 V: fica só o capacitor de 100 nF para o GND.
 
-| Pino | Ligação |
-|---|---|
-| PC0 (ADC0) | cursor de um potenciômetro de 10 kΩ, extremos em 5 V e GND |
-| PD6 (OC0A) | resistor de 220 Ω em série com o LED, catodo no GND; osciloscópio a 200 µs/div |
-| AVcc, AREF | 5 V no SimulIDE; na placa, AREF só com 100 nF para o GND |
+O ADC usa referência AVcc (`REFS0` = 1), canal 0, resultado alinhado à esquerda (`ADLAR` = 1) e prescaler 128, o que dá 16 MHz / 128 = 125 kHz, na faixa de 50 a 200 kHz do conversor. A entrada digital de PC0 fica desligada (`ADC0D` em `DIDR0`). Com `ADLAR`, `ADCH` já tem os 8 bits de cima da conversão, e esse byte vai para `OCR0A`. 0 V apaga o LED e 5 V acende.
 
-### ADC
+O PWM é o mesmo do 5a: Fast PWM modo 3, 976,6 Hz.
 
-Referência AVcc (`REFS0 = 1`), canal 0, resultado alinhado à esquerda (`ADLAR = 1`) e prescaler 128 (`ADPS2..0 = 111`), o que dá 16 MHz / 128 = 125 kHz, dentro da faixa de 50 a 200 kHz do datasheet. O buffer digital do PC0 fica desligado (`ADC0D` em `DIDR0`). Com `ADLAR = 1`, `ADCH` guarda os 8 bits mais significativos da conversão, e o programa copia esse byte para `OCR0A`: 0 V apaga o LED e 5 V o deixa aceso.
-
-### Timer0
-
-O mesmo do 5a: Fast PWM modo 3, TOP = `0xFF`, não inversora em OC0A, prescaler 64, 976,6 Hz.
-
-### Código
+## Código do 5b
 
 [`src/brilho_adc.asm`](src/brilho_adc.asm)
 
@@ -178,7 +161,3 @@ espera_adc:
     out OCR0A, temp             ; duty = (ADCH + 1) / 256
     rjmp laco
 ```
-
-## Vídeo
-
-LINK_PENDENTE — gravar a simulação e publicar no YouTube ou no Google Drive.

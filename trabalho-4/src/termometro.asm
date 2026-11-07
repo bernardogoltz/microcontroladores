@@ -1,4 +1,3 @@
-;==============================================================================
 ; Trabalho 4 - Media de 4 sensores de temperatura em 2 displays de 7 segmentos
 ;
 ; Microcontrolador : ATmega328P @ 16 MHz
@@ -25,13 +24,9 @@
 ;    Timer0 em modo CTC gera interrupcao a cada 2,5 ms (400 Hz).
 ;    A cada interrupcao um display e aceso (200 Hz por display) e o laco
 ;    principal recebe um tick; a cada 100 ticks faz uma nova leitura.
-;==============================================================================
 
 .include "m328Pdef.inc"
 
-;------------------------------------------------------------------------------
-; Constantes
-;------------------------------------------------------------------------------
 .equ DIG_DEZ    = 7             ; PD7: habilita display das dezenas
 .equ DIG_UNI    = 0             ; PB0: habilita display das unidades
 
@@ -47,9 +42,6 @@
 .equ SEG_H      = 0x76          ; b c e f g
 .equ SEG_I      = 0x04          ; c
 
-;------------------------------------------------------------------------------
-; Registradores
-;------------------------------------------------------------------------------
 .def disp_dez = r2              ; padrao de segmentos do display das dezenas
 .def disp_uni = r3              ; padrao de segmentos do display das unidades
 .def mux      = r4              ; bit 0 indica qual display acender
@@ -64,9 +56,6 @@
 .def adc_l    = r24             ; ultima conversao do ADC
 .def adc_h    = r25
 
-;------------------------------------------------------------------------------
-; Vetores de interrupcao
-;------------------------------------------------------------------------------
 .cseg
 .org 0x0000
     rjmp reset
@@ -75,25 +64,17 @@
 
 .org INT_VECTORS_SIZE
 
-;------------------------------------------------------------------------------
-; Inicializacao
-;------------------------------------------------------------------------------
 reset:
     ldi temp, high(RAMEND)      ; pilha no fim da SRAM
     out SPH, temp
     ldi temp, low(RAMEND)
     out SPL, temp
 
+    ; PORTB, PORTC, PORTD e DDRC valem 0 desde o reset: displays apagados
+    ; e PC0..PC3 como entradas analogicas, sem pull-up
     ser temp                    ; PD0..PD6 segmentos, PD7 dezenas
     out DDRD, temp
-    clr temp
-    out PORTD, temp             ; displays apagados
-    ldi temp, (1<<DIG_UNI)      ; PB0 saida (unidades)
-    out DDRB, temp
-    clr temp
-    out PORTB, temp
-    out DDRC, temp              ; PC0..PC3 entradas analogicas, sem pull-up
-    out PORTC, temp
+    sbi DDRB, DIG_UNI           ; PB0 unidades
 
     ldi temp, (1<<ADC3D)|(1<<ADC2D)|(1<<ADC1D)|(1<<ADC0D)
     sts DIDR0, temp             ; desliga a entrada digital dos pinos do ADC
@@ -111,16 +92,13 @@ reset:
     ldi temp, (1<<OCIE0A)       ; habilita interrupcao de comparacao A
     sts TIMSK0, temp
 
-    clr mux
     clr disp_dez                ; displays apagados ate a 1a leitura
     clr disp_uni
     ldi ticks, 1                ; 1a leitura no primeiro tick
     sei
 
-;------------------------------------------------------------------------------
 ; Laco principal: espera o tick do Timer0 e, a cada N_TICKS ticks, le os
 ; sensores, calcula a media e atualiza os displays.
-;------------------------------------------------------------------------------
 laco:
     sbis GPIOR0, 0              ; espera o tick sinalizado pela interrupcao
     rjmp laco
@@ -135,9 +113,7 @@ laco:
     rcall mostra_temperatura
     rjmp laco
 
-;------------------------------------------------------------------------------
 ; Interrupcao do Timer0 (2,5 ms): multiplexacao dos displays
-;------------------------------------------------------------------------------
 isr_timer0:
     push temp
     in temp, SREG
@@ -163,9 +139,7 @@ isr_fim:
     pop temp
     reti
 
-;------------------------------------------------------------------------------
-; le_sensores: le ADC0..ADC3 e deixa a media em soma_h:soma_l
-;------------------------------------------------------------------------------
+; Le ADC0..ADC3 e deixa a media em soma_h:soma_l
 le_sensores:
     clr soma_l
     clr soma_h
@@ -185,9 +159,7 @@ le_proximo:
     ror soma_l
     ret
 
-;------------------------------------------------------------------------------
-; le_adc: converte o canal em temp e devolve o resultado em adc_h:adc_l
-;------------------------------------------------------------------------------
+; Converte o canal em temp e devolve o resultado em adc_h:adc_l
 le_adc:
     ori temp, (1<<REFS0)        ; referencia AVcc + canal
     sts ADMUX, temp
@@ -202,11 +174,9 @@ espera_adc:
     lds adc_h, ADCH
     ret
 
-;------------------------------------------------------------------------------
-; converte: graus = (media * 25 + 128) / 256, com media em soma_h:soma_l
+; graus = (media * 25 + 128) / 256, com media em soma_h:soma_l
 ;   media * 25 = soma_l * 25 + (soma_h * 25) * 256  (cabe em 16 bits)
 ;   O byte alto do produto e a parte inteira; o bit 7 do byte baixo arredonda.
-;------------------------------------------------------------------------------
 converte:
     ldi temp, ESCALA
     mul soma_l, temp            ; r1:r0 = soma_l * 25
@@ -219,10 +189,8 @@ converte:
     inc graus
     ret
 
-;------------------------------------------------------------------------------
-; mostra_temperatura: escreve graus nos buffers dos displays,
-;   ou "Lo" / "Hi" fora da faixa T_MIN..T_MAX
-;------------------------------------------------------------------------------
+; Escreve graus nos buffers dos displays, ou "Lo" e "Hi" fora da faixa
+; T_MIN..T_MAX
 mostra_temperatura:
     cpi graus, T_MIN
     brlo mostra_baixo
@@ -251,9 +219,7 @@ mostra_texto:
     mov disp_uni, temp2
     ret
 
-;------------------------------------------------------------------------------
-; div10: temp2 = temp2 mod 10, aux = temp2 / 10
-;------------------------------------------------------------------------------
+; temp2 = temp2 mod 10, aux = temp2 / 10
 div10:
     clr aux
 div10_laco:
@@ -265,9 +231,7 @@ div10_laco:
 div10_fim:
     ret
 
-;------------------------------------------------------------------------------
-; segmentos: converte o digito em temp (0..9) no padrao de 7 segmentos
-;------------------------------------------------------------------------------
+; Converte o digito em temp (0..9) no padrao de 7 segmentos
 segmentos:
     ldi ZH, high(tabela_7seg*2)
     ldi ZL, low(tabela_7seg*2)
@@ -277,8 +241,5 @@ segmentos:
     lpm temp, Z
     ret
 
-;------------------------------------------------------------------------------
-; Tabela em memoria de programa
-;------------------------------------------------------------------------------
 tabela_7seg:            ;  0     1     2     3     4     5     6     7     8     9
     .db                  0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F

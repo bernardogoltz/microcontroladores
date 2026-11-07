@@ -2,48 +2,37 @@
 
 Trabalho 6 de Microcontroladores (2026/2) · Bernardo Ivo Goltz (202112108)
 
-PWM de frequência fixa em 10 kHz no Timer1 do ATmega328P a 16 MHz, simulado no SimulIDE 1.1.0. Um potenciômetro no ADC0 ajusta o duty cycle de praticamente 0 % a 99,9 % sem mudar a frequência.
+O Timer1 do ATmega328P gera um PWM de 10 kHz. O duty cycle vem de um potenciômetro no ADC0, e a frequência não muda com ele. Clock de 16 MHz, simulado no SimulIDE.
 
-![PWM de 10 kHz simulado no SimulIDE](docs/simulide.gif)
+Os trabalhos da disciplina, com circuito, código e simulação, estão em https://github.com/bernardogoltz/microcontroladores
+
+![PWM de 10 kHz no SimulIDE](docs/simulide.gif)
 
 [Circuito SimulIDE](simulide/pwm.sim1)
 
-## Hardware
+O potenciômetro é de 10 kΩ. O cursor vai em PC0 (ADC0) e os extremos em 5 V e GND. O LED está em PB1 (OC1A), com resistor de 220 Ω e o catodo no GND. O osciloscópio mede PB1 em 50 µs/div, e o período de 100 µs ocupa duas divisões. AVcc e AREF ficam em 5 V.
 
-| Pino | Ligação |
-|---|---|
-| PC0 (ADC0) | cursor de um potenciômetro de 10 kΩ, extremos em 5 V e GND |
-| PB1 (OC1A) | resistor de 220 Ω em série com o LED, catodo no GND; canal 1 do osciloscópio |
-| AVcc, AREF | 5 V |
-
-O osciloscópio do SimulIDE fica em PB1 com 50 µs/div, então cada período de 100 µs ocupa duas divisões.
-
-## Timer1
-
-Fast PWM modo 14 (`WGM13 = WGM12 = WGM11 = 1`, `WGM10 = 0`), com TOP em `ICR1`, saída não inversora em OC1A (`COM1A1 = 1`) e prescaler 1 (`CS10 = 1`):
+Modo 14 do Timer1: Fast PWM com TOP em `ICR1` (`WGM13`, `WGM12` e `WGM11` em 1, `WGM10` em 0), saída não inversora em OC1A (`COM1A1` = 1), prescaler 1 (`CS10` = 1).
 
 ```
-f_PWM = f_clk / (N × (1 + TOP)) = 16 000 000 / (1 × (1599 + 1)) = 10 000 Hz = 10 kHz
-TOP   = ICR1 = 16 000 000 / 10 000 − 1 = 1599
+f_PWM = 16 000 000 / (1599 + 1) = 10 kHz
+ICR1  = 16 000 000 / 10 000 - 1 = 1599
 ```
 
-O TOP fica em `ICR1` e não em `OCR1A` (modo 15), porque `OCR1A` precisa ficar livre para o duty. Assim a frequência não muda quando o duty muda. Nos registradores de 16 bits o byte alto é escrito antes do baixo (`ICR1H` antes de `ICR1L`, `OCR1AH` antes de `OCR1AL`), porque a escrita do byte baixo é que copia o par pelo registrador `TEMP`.
+O modo 14 deixa o TOP em `ICR1` e o `OCR1A` livre para a largura do pulso. A frequência fica em 10 kHz e o potenciômetro só mexe no duty.
 
-## Duty cycle
+`ICR1` e `OCR1A` são de 16 bits. O byte alto é escrito antes do baixo (`ICR1H` antes de `ICR1L`, e o mesmo em `OCR1AH`/`OCR1AL`): a escrita do byte baixo é que grava o par, pelo registrador TEMP. No ADC a ordem é invertida. `ADCL` vem antes de `ADCH`, porque a leitura de `ADCL` segura o resultado até `ADCH`.
 
-O ADC usa referência AVcc, canal 0, resultado de 10 bits alinhado à direita e prescaler 128 (125 kHz). `ADCL` é lido antes de `ADCH`, porque a leitura de `ADCL` trava o resultado até a leitura de `ADCH`. A leitura vira o valor de comparação:
+A referência é AVcc, canal 0, alinhado à direita, prescaler 128 (16 MHz / 128 = 125 kHz).
 
 ```
-OCR1A = (ADC × 1600) / 1024 = (ADC × 25) / 16 = (ADC × 25) >> 4
-duty  = (OCR1A + 1) / (ICR1 + 1) = (OCR1A + 1) / 1600
-ADC 0    → OCR1A 0     → duty 1/1600    = 0,06 %
-ADC 512  → OCR1A 800   → duty 801/1600  = 50,1 %
-ADC 1023 → OCR1A 1598  → duty 1599/1600 = 99,9 %
+OCR1A = (ADC × 1600) / 1024 = (ADC × 25) >> 4
+duty  = (OCR1A + 1) / 1600
 ```
 
-No Fast PWM a saída sobe no início do período e desce quando o contador passa de `OCR1A`, por isso o `+ 1`. Com `OCR1A = 0` sobra um pulso de 62,5 ns a cada 100 µs, e o LED fica apagado na prática.
+ADC 0 vira `OCR1A` 0. O duty fica em 1/1600 (0,06%), um pulso de 62,5 ns, e o LED apaga. ADC 512 vira 800 (50,1%). ADC 1023 vira 1598 (99,9%). O +1 é do Fast PWM. A saída cai quando o contador passa de `OCR1A`, então o pulso tem um passo a mais.
 
-Como ADC × 25 ≤ 25 575, a conta cabe em 16 bits: duas instruções `mul` de 8 × 8 bits e quatro deslocamentos à direita.
+ADC × 25 no máximo dá 25 575, então a multiplicação cabe em 16 bits. São duas `mul` de 8 bits e quatro deslocamentos à direita.
 
 ## Código
 
@@ -183,7 +172,3 @@ calcula_duty:
     ror adc_l
     ret
 ```
-
-## Vídeo
-
-LINK_PENDENTE — gravar a simulação e publicar no YouTube ou no Google Drive.

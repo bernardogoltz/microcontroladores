@@ -10,6 +10,9 @@
 !/trabalho-*/docs/
 /trabalho-*/src/*
 !/trabalho-*/src/*.asm
+!/trabalho-*/src/*/
+/trabalho-*/src/*/*
+!/trabalho-*/src/*/*.ino
 /trabalho-*/simulide/*
 !/trabalho-*/simulide/*.sim1
 /trabalho-*/docs/*

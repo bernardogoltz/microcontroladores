@@ -1,0 +1,49 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="1" vflip="1" label="Mestre" idLabPos="50,235" labelrot="0" valLabPos="0,0" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../build/mestre.ino.hex" Auto_Load="false" saveEepr="false" MainMcu="true" SerialMon="1" />
+</item>
+
+<item itemtype="Subcircuit" CircId="Uno-2" mainComp="false" Show_id="true" Show_Val="false" Pos="360,0" rotation="0" hflip="1" vflip="1" label="Escravo 0x08" idLabPos="50,235" labelrot="0" valLabPos="0,0" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../build/escravo.ino.hex" Auto_Load="false" saveEepr="false" MainMcu="false" SerialMon="1" />
+</item>
+
+<item itemtype="Push" CircId="Push-3" mainComp="false" Show_id="true" Show_Val="false" Pos="-64,32" rotation="0" hflip="1" vflip="1" label="Botao" idLabPos="-12,-28" labelrot="0" valLabPos="0,0" valLabRot="0" Norm_Close="false" Poles="1" />
+
+<item itemtype="Ground" CircId="Ground-4" mainComp="false" Show_id="false" Show_Val="false" Pos="-96,48" rotation="0" hflip="1" vflip="1" label="Ground-4" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Node" CircId="Node-5" mainComp="false" Pos="300,-40" />
+
+<item itemtype="Node" CircId="Node-6" mainComp="false" Pos="300,-24" />
+
+<item itemtype="Resistor" CircId="Resistor-7" mainComp="false" Show_id="true" Show_Val="false" Pos="300,-72" rotation="90" hflip="1" vflip="1" label="SCL 4,7 k" idLabPos="-24,-30" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="4.7 kΩ" />
+
+<item itemtype="Rail" CircId="Rail-8" mainComp="false" Show_id="false" Show_Val="false" Pos="300,-120" rotation="90" hflip="1" vflip="1" label="Rail-8" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Resistor" CircId="Resistor-9" mainComp="false" Show_id="true" Show_Val="false" Pos="300,8" rotation="-90" hflip="1" vflip="1" label="SDA 4,7 k" idLabPos="-24,-30" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="4.7 kΩ" />
+
+<item itemtype="Rail" CircId="Rail-10" mainComp="false" Show_id="false" Show_Val="false" Pos="300,56" rotation="-90" hflip="1" vflip="1" label="Rail-10" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="TextComponent" CircId="Text-11" mainComp="false" Show_id="false" Show_Val="false" Pos="-8,-230" rotation="0" hflip="1" vflip="1" label="Text-11" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 9 - I2C entre dois Arduinos, SCL de 100 kHz&#xa;Mestre: botao em D2 (pull-up interno, debounce de 20 ms)&#xa;Escravo 0x08: 0x01 liga e 0x00 apaga o LED da placa (D13)&#xa;SDA = A4, SCL = A5, pull-ups de 4,7 k para 5 V, GND comum" />
+
+<item itemtype="Connector" uid="Connector-12" startpinid="Push-3-switch0pinN" endpinid="Uno-1-2" pointList="-48,32,8,32" />
+
+<item itemtype="Connector" uid="Connector-13" startpinid="Push-3-pinP0" endpinid="Ground-4-Gnd" pointList="-80,32,-96,32" />
+
+<item itemtype="Connector" uid="Connector-14" startpinid="Uno-1-A5" endpinid="Node-5-0" pointList="152,16,216,16,216,-40,300,-40" />
+
+<item itemtype="Connector" uid="Connector-15" startpinid="Node-5-1" endpinid="Uno-2-A5" pointList="300,-40,552,-40,552,16,512,16" />
+
+<item itemtype="Connector" uid="Connector-16" startpinid="Node-5-2" endpinid="Resistor-7-rPin" pointList="300,-40,300,-56" />
+
+<item itemtype="Connector" uid="Connector-17" startpinid="Rail-8-outnod" endpinid="Resistor-7-lPin" pointList="300,-104,300,-88" />
+
+<item itemtype="Connector" uid="Connector-18" startpinid="Uno-1-A4" endpinid="Node-6-0" pointList="152,24,232,24,232,-24,300,-24" />
+
+<item itemtype="Connector" uid="Connector-19" startpinid="Node-6-1" endpinid="Uno-2-A4" pointList="300,-24,536,-24,536,24,512,24" />
+
+<item itemtype="Connector" uid="Connector-20" startpinid="Node-6-2" endpinid="Resistor-9-rPin" pointList="300,-24,300,-8" />
+
+<item itemtype="Connector" uid="Connector-21" startpinid="Rail-10-outnod" endpinid="Resistor-9-lPin" pointList="300,40,300,24" />
+
+</circuit>

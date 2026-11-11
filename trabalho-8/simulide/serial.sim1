@@ -1,0 +1,31 @@
+<circuit version="1.1.0" rev="2224" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Subcircuit" CircId="Uno-1" mainComp="false" Show_id="true" Show_Val="false" Pos="0,0" rotation="0" hflip="1" vflip="1" label="Arduino 1 - sensor" idLabPos="50,235" labelrot="0" valLabPos="0,0" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../build/sensor.ino.hex" Auto_Load="false" saveEepr="false" MainMcu="true" SerialMon="1" />
+</item>
+
+<item itemtype="Subcircuit" CircId="Uno-2" mainComp="false" Show_id="true" Show_Val="false" Pos="360,0" rotation="0" hflip="1" vflip="1" label="Arduino 2 - monitor" idLabPos="50,235" labelrot="0" valLabPos="0,0" valLabRot="0" Logic_Symbol="false">
+<mainCompProps MainCompId="mega328-109" Frequency="16 MHz" Program="../build/monitor.ino.hex" Auto_Load="false" saveEepr="false" MainMcu="false" SerialMon="1" />
+</item>
+
+<item itemtype="Potentiometer" CircId="Pot-3" mainComp="false" Show_id="true" Show_Val="false" Pos="232,24" rotation="0" hflip="1" vflip="1" label="Temperatura" idLabPos="-36,22" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Resistance" Resistance="10 kΩ" Value_Ohm="5000 Ω" Slider="false" Scale="1" />
+
+<item itemtype="Rail" CircId="Rail-4" mainComp="false" Show_id="false" Show_Val="false" Pos="248,-8" rotation="90" hflip="1" vflip="1" label="Rail-4" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="Ground" CircId="Ground-5" mainComp="false" Show_id="false" Show_Val="false" Pos="216,8" rotation="180" hflip="1" vflip="1" label="Ground-5" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" />
+
+<item itemtype="Rail" CircId="Rail-6" mainComp="false" Show_id="false" Show_Val="false" Pos="-24,144" rotation="0" hflip="1" vflip="1" label="Rail-6" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" ShowProp="Voltage" Voltage="5 V" />
+
+<item itemtype="TextComponent" CircId="Text-7" mainComp="false" Show_id="false" Show_Val="false" Pos="-8,-150" rotation="0" hflip="1" vflip="1" label="Text-7" idLabPos="-16,-24" labelrot="0" valLabPos="0,0" valLabRot="0" Margin="6 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="false" Text="Trabalho 8 - Serial entre dois Arduinos (9600 baud)&#xa;Arduino 1: le A0 a cada 0,5 s, T = -100 + ADC x 350 / 1023, envia em decimos&#xa;TX (D1) do Arduino 1 -> RX (D0) do Arduino 2, GND comum&#xa;Arduino 2: mostra a temperatura e a media das 10 ultimas" />
+
+<item itemtype="Connector" uid="Connector-8" startpinid="Uno-1-1" endpinid="Uno-2-0" pointList="8,24,-8,24,-8,-24,344,-24,344,16,368,16" />
+
+<item itemtype="Connector" uid="Connector-9" startpinid="Pot-3-PinM" endpinid="Uno-1-A0" pointList="232,40,232,56,152,56" />
+
+<item itemtype="Connector" uid="Connector-10" startpinid="Rail-4-outnod" endpinid="Pot-3-PinB" pointList="248,8,248,24" />
+
+<item itemtype="Connector" uid="Connector-11" startpinid="Ground-5-Gnd" endpinid="Pot-3-PinA" pointList="216,24,216,24" />
+
+<item itemtype="Connector" uid="Connector-12" startpinid="Rail-6-outnod" endpinid="Uno-1-AREF" pointList="-8,144,8,144" />
+
+</circuit>

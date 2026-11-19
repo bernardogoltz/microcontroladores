@@ -1,0 +1,357 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{portuguese}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  commentstyle=\color{gray}\itshape,
+  numbers=left, numberstyle=\tiny\color{gray},
+  frame=single, breaklines=true, columns=fullflexible,
+  literate={º}{{$^\circ$}}1
+}
+
+\title{Trabalho Final -- Inclinômetro com ADXL335}
+\author{Bernardo}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objetivo}
+Medir o ângulo de inclinação em torno do eixo X com o acelerômetro
+analógico ADXL335 (módulo GY-61), mostrar o valor em graus num OLED
+SSD1306 e acender um LED quando a inclinação chega a 30$^\circ$ para
+qualquer lado.
+
+\section{Critérios do projeto}
+A Tabela~\ref{tab:criterios} lista o que o sistema precisa cumprir e
+onde cada ponto é resolvido. As seções seguintes explicam cada um.
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{>{\raggedright}p{4.2cm}X}
+\toprule
+Critério & Como é atendido \\
+\midrule
+Medir o ângulo em X & $\operatorname{atan2}(a_y, a_z)$ com os eixos Y e Z
+  (Seção~\ref{sec:angulo}) \\
+Exatidão independente do USB & leitura dos 3,3~V em A3 e divisão
+  raciométrica (Seção~\ref{sec:ref}) \\
+Leitura sem ruído & média de 16 amostras + filtro passa-baixa
+  (Seções~\ref{sec:media} e \ref{sec:filtro}) \\
+Número estável na tela & histerese de 0,8$^\circ$ (Seção~\ref{sec:hist}) \\
+Alarme a 30$^\circ$ & LED em D8 aceso se $|\theta| \ge 30^\circ$ \\
+Segurança elétrica do OLED & pull-ups internos de 5~V desligados
+  (Seção~\ref{sec:hw}) \\
+Ajuste a cada sensor & constantes \texttt{ZERO} e \texttt{ESCALA}
+  (Seção~\ref{sec:calib}) \\
+\bottomrule
+\end{tabularx}
+\caption{Critérios e solução adotada.}
+\label{tab:criterios}
+\end{table}
+
+\section{Material e ligações}
+Arduino Uno (ATmega328P, 16~MHz), módulo GY-61 (ADXL335), OLED
+128$\times$64 I\textsuperscript{2}C (endereço 0x3C), LED e resistor de
+220~$\Omega$.
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Pino do Uno & Ligação \\
+\midrule
+3,3 V / GND & VCC e GND do GY-61 e do OLED \\
+A1, A2 & saídas Y e Z do GY-61 \\
+A3 & trilho de 3,3 V (referência) \\
+A4 / A5 & SDA / SCL do OLED \\
+D8 & 220~$\Omega$ $\rightarrow$ LED $\rightarrow$ GND \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A saída X do GY-61 não é ligada: para inclinar em torno do eixo X só
+importam Y e Z.
+
+\section{Fundamentos}
+
+\subsection{Como o sensor responde}
+O ADXL335 mede aceleração em três eixos e entrega uma tensão para cada
+um. Parado, a única aceleração que ele sente é a gravidade (1~g). Com
+o eixo na horizontal (0~g nele), a saída fica na metade da alimentação:
+1,65~V com 3,3~V. Cada 1~g desloca a saída cerca de um décimo da
+alimentação, 0,33~V. Como esses valores acompanham a tensão de
+alimentação, o sensor é chamado de \emph{raciométrico}.
+
+\subsection{O ADC do Uno}
+O conversor analógico-digital (ADC) de 10 bits transforma a tensão do
+pino num número $N$ de 0 a 1023:
+\[
+  N = \left\lfloor \frac{V_\text{pino}}{V_\text{ref}} \times 1024 \right\rfloor
+\]
+onde $V_\text{ref}$ é a referência do ADC, por padrão os 5~V do USB.
+
+\subsection{Por que ler os 3,3~V em A3}\label{sec:ref}
+Os 5~V do USB não são exatos: variam de 4,7 a 5,1~V conforme a porta e
+o cabo. Se o programa usasse direto a leitura do eixo, a mesma tensão
+viraria números diferentes. Exemplo: 0,1~V a menos no USB (2\%) muda a
+leitura do eixo Z em cerca de 10 contagens, o que equivale a 0,1~g e
+dá perto de 6$^\circ$ de erro.
+
+A solução é medir, com o mesmo ADC, a própria alimentação do sensor
+(3,3~V em A3) e dividir uma leitura pela outra:
+\[
+  \frac{N_\text{eixo}}{N_\text{A3}}
+  \approx \frac{V_\text{eixo}/V_\text{ref}}{3{,}3/V_\text{ref}}
+  = \frac{V_\text{eixo}}{3{,}3}
+\]
+O $V_\text{ref}$ some da conta. Multiplicando por 1024, o resultado
+fica na mesma faixa de uma leitura comum, mas agora relativo aos
+3,3~V. Como o sensor também é relativo aos 3,3~V, os valores teóricos
+ficam fixos: 0~g vale $1024/2 = 512$ e 1~g vale $1024/10 = 102{,}4$.
+
+\subsection{Cálculo do ângulo}\label{sec:angulo}
+Girando o sensor em torno do eixo X por um ângulo $\theta$, a gravidade
+se divide entre Y e Z:
+\[
+  a_y = \sin\theta \cdot 1\,\text{g}, \qquad a_z = \cos\theta \cdot 1\,\text{g}
+\]
+Logo $\theta = \arctan(a_y / a_z)$. O programa usa
+$\operatorname{atan2}(a_y, a_z)$, que faz a mesma conta mas olha o
+sinal dos dois argumentos e devolve o ângulo no quadrante certo, de
+$-180^\circ$ a $+180^\circ$. Ela também não divide por zero quando
+$a_z = 0$ (sensor a 90$^\circ$).
+
+Uma vantagem: como entra a \emph{razão} entre $a_y$ e $a_z$, um erro de
+escala igual nos dois eixos se cancela. Por isso o ângulo é bem menos
+sensível à constante \texttt{ESCALA} do que ao \texttt{ZERO}.
+
+\textbf{Exemplo.} Inclinado 30$^\circ$: $a_y = 0{,}5$~g e
+$a_z = 0{,}866$~g. As leituras corrigidas seriam
+$512 + 0{,}5 \times 102{,}4 = 563{,}2$ e
+$512 + 0{,}866 \times 102{,}4 = 600{,}7$.
+Voltando: $\operatorname{atan2}(0{,}5;\ 0{,}866) = 30^\circ$.
+
+\subsection{Média de 16 leituras}\label{sec:media}
+Cada leitura do ADC tem ruído de uma ou duas contagens. Somar 16
+leituras e dividir por 16 reduz esse ruído cerca de 4 vezes
+($\sqrt{16}$). A soma máxima é $16 \times 1023 = 16\,368$, que cabe
+num \texttt{unsigned int} de 16 bits (até 65\,535).
+
+Antes das 16 leituras há uma leitura descartada. O ADC tem um só
+conversor e um seletor (multiplexador) que escolhe o pino; logo após
+trocar de pino, a primeira conversão ainda pode trazer resto do pino
+anterior.
+
+\subsection{Filtro passa-baixa}\label{sec:filtro}
+Mesmo com a média, o ângulo ainda oscila. O filtro faz o valor
+guardado andar só uma fração $\alpha = 0{,}05$ (5\%) em direção à
+leitura nova:
+\[
+  \theta_\text{filtrado} \leftarrow \theta_\text{filtrado}
+    + \alpha\,(\theta_\text{novo} - \theta_\text{filtrado})
+\]
+É uma média ponderada: 95\% do valor antigo e 5\% do novo. Ruído
+rápido, que sobe e desce, quase não move o resultado; uma mudança real
+e duradoura chega aos poucos. Após $n$ ciclos resta $0{,}95^n$ da
+diferença inicial: 37\% após 20 ciclos e 5\% após 60 ciclos.
+
+O custo é atraso. Cada ciclo dura os 50~ms do \texttt{delay} mais o
+tempo de ler o ADC e de enviar a tela (estimado em algumas dezenas de
+milissegundos, não medido). Assim, a tela leva da ordem de 1 a 2~s
+para acompanhar a maior parte de um movimento e alguns segundos para
+assentar de vez.
+
+\subsection{Histerese}\label{sec:hist}
+A tela mostra um número inteiro. Se o ângulo filtrado estivesse em
+20,5$^\circ$, um arredondamento simples ficaria pulando entre 20 e 21.
+A histerese evita isso: o número mostrado só é atualizado quando o
+ângulo filtrado se afasta mais de 0,8$^\circ$ dele. Exemplo: mostrando
+20, o valor só muda se o ângulo passar de 20,8 ou cair abaixo de 19,2.
+Como 0,8 é maior que 0,5 (meio grau do arredondamento), sobra uma
+margem em que pequenas oscilações não mudam nada.
+
+O LED usa o número mostrado, então ele também herda essa estabilidade
+e não pisca perto dos 30$^\circ$.
+
+\section{O código, parte por parte}
+
+\subsection{Bibliotecas e constantes}
+\begin{lstlisting}
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+const uint8_t PINO_Y = A1, PINO_Z = A2, PINO_REF = A3, LED = 8;
+const float ZERO = 512;      // leitura em 0 g
+const float ESCALA = 102.4;  // leitura por 1 g
+const int LIMIAR = 30;       // graus
+const float ALFA = 0.05;     // peso da leitura nova no filtro
+\end{lstlisting}
+\texttt{Wire} é a biblioteca do I\textsuperscript{2}C (o barramento de
+dois fios do OLED). \texttt{Adafruit\_GFX} desenha texto e formas e
+\texttt{Adafruit\_SSD1306} fala com o controlador da tela. As
+constantes reúnem num só lugar tudo o que se pode querer ajustar:
+pinos, calibração, limiar do LED e força do filtro.
+
+\subsection{Variáveis globais}
+\begin{lstlisting}
+Adafruit_SSD1306 tela(128, 64, &Wire, -1);
+float angulo = 0;
+int mostrado = 0;
+\end{lstlisting}
+\texttt{tela} é o objeto do OLED: 128$\times$64 pixels, no barramento
+\texttt{Wire}, sem pino de reset ($-1$). \texttt{angulo} guarda o
+valor filtrado e \texttt{mostrado} o inteiro da tela. Elas ficam fora
+das funções porque precisam manter o valor de um ciclo do
+\texttt{loop} para o próximo: o filtro e a histerese dependem do valor
+anterior.
+
+\subsection{Função \texttt{le}: média de 16 leituras}
+\begin{lstlisting}
+float le(uint8_t pino) {
+  analogRead(pino);                 // descarta a primeira
+  unsigned int soma = 0;
+  for (uint8_t i = 0; i < 16; i++) soma += analogRead(pino);
+  return soma / 16.0;
+}
+\end{lstlisting}
+A primeira \texttt{analogRead} só troca o canal e é jogada fora
+(Seção~\ref{sec:media}). Dividir por \texttt{16.0}, e não por
+\texttt{16}, força a conta em ponto flutuante e preserva as casas
+decimais da média.
+
+\subsection{Função \texttt{leG}: leitura em g}
+\begin{lstlisting}
+float leG(uint8_t pino, float ref) {
+  return (le(pino) / ref * 1024 - ZERO) / ESCALA;
+}
+\end{lstlisting}
+É a fórmula da Seção~\ref{sec:ref} em uma linha, em três passos:
+\begin{enumerate}
+  \item $N/N_\text{A3} \times 1024$: leitura relativa
+    aos 3,3~V, livre do erro do USB;
+  \item $-\,$\texttt{ZERO}: tira o ponto de 0~g, deixando só o desvio;
+  \item $/\,$\texttt{ESCALA}: converte contagens em g.
+\end{enumerate}
+O \texttt{ref} vem de fora porque é lido uma vez por ciclo e usado nos
+dois eixos.
+
+\subsection{\texttt{setup}: executado uma vez}
+\begin{lstlisting}
+void setup() {
+  pinMode(LED, OUTPUT);
+  tela.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  digitalWrite(SDA, LOW);   // desliga pull-up interno
+  digitalWrite(SCL, LOW);
+  tela.cp437(true);
+  tela.setTextColor(SSD1306_WHITE);
+  tela.setTextSize(2);
+}
+\end{lstlisting}
+\begin{itemize}
+  \item \texttt{pinMode} configura D8 como saída para o LED.
+  \item \texttt{tela.begin} inicia o I\textsuperscript{2}C e a tela no
+    endereço 0x3C. \texttt{SWITCHCAPVCC} diz que a tensão alta do
+    painel é gerada dentro do próprio módulo.
+  \item Os dois \texttt{digitalWrite(\dots, LOW)} desligam os pull-ups
+    internos (Seção~\ref{sec:hw}). Num pino configurado como entrada,
+    escrever LOW desliga o pull-up em vez de mandar 0~V.
+  \item \texttt{cp437(true)} ativa a tabela de caracteres em que o
+    código 248 é o símbolo de grau ($^\circ$).
+  \item Texto branco, tamanho 2 (cada caractere com 12$\times$16 pixels).
+\end{itemize}
+
+\subsection{\texttt{loop}: executado sem parar}
+\begin{lstlisting}
+void loop() {
+  float ref = le(PINO_REF);
+  float novo = atan2(leG(PINO_Y, ref), leG(PINO_Z, ref)) * RAD_TO_DEG;
+  angulo += ALFA * (novo - angulo);
+  if (fabs(angulo - mostrado) > 0.8) mostrado = round(angulo);
+
+  digitalWrite(LED, abs(mostrado) >= LIMIAR);
+
+  tela.clearDisplay();
+  tela.setCursor(0, 24);
+  tela.print(F("X  "));
+  tela.print(mostrado);
+  tela.write(248);
+  tela.display();
+
+  delay(50);
+}
+\end{lstlisting}
+Linha a linha:
+\begin{enumerate}
+  \item Lê a referência de 3,3~V uma vez por ciclo.
+  \item Lê Y e Z em g e calcula o ângulo. \texttt{atan2} devolve
+    radianos; \texttt{RAD\_TO\_DEG} ($180/\pi$) converte para graus.
+  \item Filtro passa-baixa (Seção~\ref{sec:filtro}).
+  \item Histerese (Seção~\ref{sec:hist}). \texttt{fabs} é o valor
+    absoluto para \texttt{float}; \texttt{round} arredonda para o
+    inteiro mais próximo.
+  \item O LED recebe o resultado da comparação: verdadeiro (1, acende)
+    se o módulo do ângulo for pelo menos 30, falso (0, apaga) se não.
+    \texttt{abs} cobre os dois lados da inclinação.
+  \item O desenho é feito numa memória interna (\emph{buffer}): limpa,
+    posiciona o cursor no meio da altura (linha 24), escreve
+    ``X'', o número e o símbolo de grau. \texttt{F(\dots)} guarda o
+    texto fixo na memória de programa, poupando a RAM de 2~kB do Uno.
+  \item Só \texttt{tela.display()} envia o buffer pelo
+    I\textsuperscript{2}C. Assim a tela troca de uma vez e não pisca.
+  \item Espera 50~ms antes do próximo ciclo.
+\end{enumerate}
+
+\section{Cuidados de hardware}\label{sec:hw}
+O OLED e o GY-61 estão em 3,3~V, mas a \texttt{Wire} liga resistores
+internos (\emph{pull-ups}) que puxam SDA e SCL para os 5~V do Uno. Isso
+põe 5~V nos pinos de um dispositivo de 3,3~V. O programa os desliga
+logo depois de iniciar a tela. Com isso, o barramento depende dos
+pull-ups do próprio módulo OLED, ligados a 3,3~V; o ATmega328P lê
+3,3~V como nível alto, então a comunicação funciona.
+
+\section{Calibração}\label{sec:calib}
+512 e 102,4 são os valores teóricos. Cada ADXL335 tem pequenas
+diferenças de zero e de sensibilidade. Para calibrar:
+\begin{enumerate}
+  \item Imprimir no monitor serial o valor corrigido
+    $N/N_\text{A3}\times 1024$ de Y e Z.
+  \item Medir cada eixo apontado para cima ($+1$~g) e para baixo
+    ($-1$~g).
+  \item \texttt{ZERO} é a média das duas leituras; \texttt{ESCALA} é a
+    metade da diferença entre elas.
+\end{enumerate}
+O código usa um só par de constantes para os dois eixos; se Y e Z
+diferirem muito, cada eixo precisaria das suas.
+
+\section{Limitações}
+\begin{itemize}
+  \item O acelerômetro não distingue gravidade de movimento: o ângulo
+    só é correto com o sensor parado. Vibrar ou chacoalhar gera erro.
+  \item O filtro que estabiliza a leitura também a atrasa
+    (Seção~\ref{sec:filtro}).
+  \item Com o sensor em pé (eixo X na vertical), $a_y$ e $a_z$ ficam
+    perto de zero e o ângulo perde o sentido.
+  \item Perto de $\pm180^\circ$ o \texttt{atan2} salta de $+180$ para
+    $-180$, e o filtro passaria pelos valores intermediários. Na faixa
+    de uso (bem abaixo disso) não ocorre.
+\end{itemize}
+
+\section{Conclusão}
+O inclinômetro atende aos critérios da Tabela~\ref{tab:criterios}: mede
+o ângulo em X sem depender da tensão do USB, graças à leitura dos
+3,3~V em A3; mostra um valor estável graças à média, ao filtro e à
+histerese; e acende o LED a 30$^\circ$ para os dois lados. O preço da
+estabilidade é um atraso de cerca de um a dois segundos na resposta.
+
+\end{document}

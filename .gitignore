@@ -17,3 +17,10 @@
 !/trabalho-*/simulide/*.sim1
 /trabalho-*/docs/*
 !/trabalho-*/docs/simulide.gif
+!/trab-final/
+/trab-final/*
+!/trab-final/src/
+!/trab-final/relatorio/
+/trab-final/relatorio/*
+!/trab-final/relatorio/*.tex
+!/trab-final/relatorio/*.pdf

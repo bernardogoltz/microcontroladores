@@ -1,0 +1,244 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{portuguese}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{tikz}
+\usetheme{Madrid}
+
+\lstset{language=C++, basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries, commentstyle=\itshape, columns=fullflexible, keepspaces, showstringspaces=false,
+  escapeinside={(*@}{@*)}}
+% marca-texto verde nas explicações do código
+\newcommand{\hl}[1]{{\setlength{\fboxsep}{1pt}\colorbox{green!25}{\rmfamily\upshape #1}}}
+
+\title{Inclinômetro com ADXL335}
+\subtitle{Trabalho Final -- Microcontroladores}
+\author{Bernardo}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{frame}{Objetivo}
+\begin{itemize}
+  \item Medir o ângulo em torno do eixo X (ADXL335 / GY-61)
+  \item Mostrar em graus num OLED SSD1306
+  \item Acender LED a partir de $\pm30^\circ$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Critérios}
+\small
+\begin{tabular}{ll}
+\toprule
+Critério & Solução \\
+\midrule
+Ângulo em X & $\operatorname{atan2}(a_y, a_z)$ \\
+Independe do USB & divisão pelos 3,3~V lidos em A3 \\
+Pouco ruído & média de 16 leituras + filtro exponencial \\
+Número estável & histerese de 0,8$^\circ$ \\
+Alarme & LED em D8 se o valor mostrado tiver $|\theta|\ge30^\circ$ \\
+OLED seguro & pull-ups internos de 5~V desligados \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Ligações}
+\begin{tabular}{ll}
+\toprule
+Pino do Uno & Ligação \\
+\midrule
+3,3 V / GND & GY-61 e OLED \\
+A1, A2 & Y e Z do GY-61 \\
+A3 & trilho de 3,3 V (referência) \\
+A4 / A5 & SDA / SCL do OLED (0x3C) \\
+D8 & 220~$\Omega$ $\rightarrow$ LED $\rightarrow$ GND \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{O problema dos 5~V do USB}
+\small
+\begin{itemize}
+  \item ADC: $N = V_\text{pino}\times1024/V_\text{ref}$ (datasheet), com $V_\text{ref}$ = 5~V do USB
+    \\ norma USB: 4,75 a 5,25~V, menos as quedas no fusível e no MOSFET da placa
+  \item Ex.: USB a 4,9~V ($-2\%$) $\Rightarrow$ o 0~g sobe $\approx$7 contagens ($\approx$0,1~g)
+    $\Rightarrow$ erro de $-2^\circ$ a $+8^\circ$, conforme o ângulo
+  \item O ADXL335 é \emph{ratiométrico}: 0~g $= V_s/2$, 1~g $\approx V_s/10$ (datasheet)
+  \item Solução: ler também os 3,3~V em A3 e dividir
+\end{itemize}
+\[
+  \frac{N_\text{eixo}}{N_\text{A3}} = \frac{V_\text{eixo}}{3{,}3}
+  \quad\Rightarrow\quad V_\text{ref}\text{ some}
+\]
+\begin{itemize}
+  \item Em unidades normalizadas ($\times1024$): 0~g $\to$ 512, \quad 1~g $\to$ 102,4, qualquer que seja o USB
+  \item A razão também cancela variações do próprio 3,3~V, que alimenta o sensor
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Por que A3 e não o pino AREF?}
+\begin{itemize}
+  \item AREF em 3,3~V + \texttt{analogReference(EXTERNAL)} também resolve
+  \item Ganho: 1~g passaria de 67,6 para 102,4 contagens reais (1,5$\times$ mais resolução)
+  \item Risco: com tensão externa em AREF, qualquer código com a referência padrão
+    curto-circuita AVCC com AREF (aviso do datasheet)
+  \item A3 não exige jumper nem cuidado no código; a perda de resolução é compensada pela média
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ângulo: a gravidade vista pelo sensor}
+\begin{columns}
+\column{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=2.3,>=stealth,
+  x={(-0.5cm,-0.4cm)},y={(1cm,0cm)},z={(0cm,1cm)}]
+  % plano Y-Z, onde a gravidade se decompõe
+  \fill[blue!8] (0,-0.2,-0.2) -- (0,1.1,-0.2) -- (0,1.1,1.1) -- (0,-0.2,1.1) -- cycle;
+  \draw[->,thick] (0,0,0) -- (1.3,0,0) node[below left]{$X$};
+  \draw[->,thick] (0,-0.2,0) -- (0,1.25,0) node[right]{$Y$};
+  \draw[->,thick] (0,0,-0.2) -- (0,0,1.25) node[above]{$Z$};
+  % rotação em torno de X
+  \draw[->,orange,thick] plot[domain=-60:220,samples=40,smooth] (0.9,{0.15*cos(\x)},{0.15*sin(\x)});
+  \node[orange,right,font=\footnotesize] at (0.9,0.2,-0.1){giro em $X$};
+  \draw[->,very thick,red] (0,0,0) -- (0,{sin(30)},{cos(30)}) node[above right]{$1\,$g};
+  \draw[dashed,blue] (0,{sin(30)},{cos(30)}) -- (0,{sin(30)},0);
+  \draw[dashed,blue] (0,{sin(30)},{cos(30)}) -- (0,0,{cos(30)});
+  \draw[blue,ultra thick] (0,0,0) -- (0,{sin(30)},0) node[below right]{$a_y=\sin\theta$};
+  \draw[blue,ultra thick] (0,0,0) -- (0,0,{cos(30)}) node[left]{$a_z=\cos\theta$};
+  \draw[->] plot[domain=0:30,samples=10,smooth] (0,{0.45*sin(\x)},{0.45*cos(\x)});
+  \node[font=\footnotesize] at (0,0.13,0.55){$\theta$};
+\end{tikzpicture}
+\column{0.5\textwidth}
+\begin{itemize}
+  \item Parado, o sensor só sente a gravidade (1~g)
+  \item Girar em X inclina esse vetor no plano Y--Z
+  \item Cada eixo mede a \emph{projeção} do vetor
+  \item X é o eixo da rotação: não muda, não entra na conta
+\end{itemize}
+\[
+  \tan\theta = \frac{a_y}{a_z}
+  \;\Rightarrow\; \theta = \operatorname{atan2}(a_y, a_z)
+\]
+\begin{itemize}
+  \item \texttt{atan2} usa os sinais: cobre $-180^\circ$ a $180^\circ$ e aceita $a_z = 0$
+  \item Só a razão importa: um erro de escala igual nos dois eixos se cancela
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Estabilizando a leitura: média e filtro}
+\small
+1 contagem real $= 5\text{~V}/1024 = 4{,}9$~mV $\approx 0{,}015$~g $\approx 0{,}85^\circ$ perto de $0^\circ$;
+exatidão do ADC: $\pm2$ LSB (datasheet).
+\begin{description}
+  \item[1. Média] 16 conversões por eixo, $\approx$1,8~ms
+    \\ reduz $\div\sqrt{16}=4$ o ruído que muda de uma conversão para outra; variação mais lenta fica para o filtro
+    \\ a 1ª é descartada: a saída do ADXL335 tem 32~k$\Omega$ em série, acima dos $\le$10~k$\Omega$ que o ADC espera,
+    e o capacitor de amostragem ainda guarda parte da tensão do canal anterior
+  \item[2. Filtro] passa-baixa exponencial, $\alpha = 0{,}05$:
+    \quad $\theta \leftarrow \theta + 0{,}05\,(\theta_\text{novo}-\theta)$
+    \\ um degrau deixa resto de $0{,}95^n$: 36\% após 20 ciclos, 5\% após 60
+    \\ ciclo $\approx$ 80~ms (estimado: 50 de \texttt{delay} + $\approx$25 de I$^2$C + $\approx$5 de ADC)
+    \\ $\Rightarrow$ constante de tempo $\approx$1,6~s (corte $\approx$0,1~Hz); 95\% de um degrau em $\approx$5~s
+\end{description}
+\end{frame}
+
+\begin{frame}{Estabilizando a leitura: histerese e LED}
+\begin{itemize}
+  \item O valor exibido só muda se $|\theta - \text{mostrado}| > 0{,}8^\circ$
+  \item Mostrando 20: muda só fora de 19,2 a 20,8
+  \item Ao mudar, mostra $\operatorname{round}(\theta)$, que fica a $\le0{,}5^\circ$ de $\theta$:
+    como $0{,}5 < 0{,}8$, o novo valor não dispara de novo $\Rightarrow$ não oscila
+  \item Evita o número piscar entre 19 e 20 na fronteira de arredondamento
+  \item O LED usa o valor \emph{mostrado}: tela e LED nunca discordam
+  \item Resultado (lógica simulada com rampa de $0{,}01^\circ$):
+    LED liga em $\approx29{,}8^\circ$ subindo e desliga em $\approx29{,}2^\circ$ descendo
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Código: leitura}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+float le(uint8_t pino) {
+  analogRead(pino);
+  unsigned int soma = 0;
+  for (uint8_t i = 0; i < 16; i++) soma += analogRead(pino);
+  return soma / 16.0;
+}
+
+float leG(uint8_t pino, float ref) {
+  return (le(pino) / ref * 1024 - ZERO) / ESCALA;
+}
+\end{lstlisting}
+\scriptsize
+\hl{\texttt{analogRead(pino);} sozinho: 1ª conversão ainda tem a tensão do canal anterior, é descartada}\\[2pt]
+\hl{\texttt{soma}: no máximo $16 \times 1023 = 16368$, cabe no \texttt{unsigned int} de 16 bits do AVR (até 65535)}\\[2pt]
+\hl{\texttt{soma / 16.0}: média; o \texttt{16.0} força divisão real, sem truncar}\\[2pt]
+\hl{\texttt{le(pino) / ref * 1024}: leitura relativa aos 3,3~V de A3; o $V_\text{ref}$ do USB se cancela}\\[2pt]
+\hl{\texttt{- ZERO}: tira a leitura de 0~g (512), sobra só o desvio}\\[2pt]
+\hl{\texttt{/ ESCALA}: divide por 102,4 (unidades normalizadas por g), resultado em g}
+\end{frame}
+
+\begin{frame}[fragile]{Código: \texttt{loop}}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+float ref = le(PINO_REF);
+float novo = atan2(leG(PINO_Y, ref), leG(PINO_Z, ref)) * RAD_TO_DEG;
+angulo += ALFA * (novo - angulo);
+if (fabs(angulo - mostrado) > 0.8) mostrado = round(angulo);
+digitalWrite(LED, abs(mostrado) >= LIMIAR);
+tela.clearDisplay();
+tela.setCursor(0, 24);
+tela.print(F("X  "));  tela.print(mostrado);  tela.write(248);
+tela.display();
+delay(50);
+\end{lstlisting}
+\scriptsize
+\hl{\texttt{ref}: 3,3~V lidos em A3; \texttt{novo}: $\theta = \operatorname{atan2}(a_y, a_z)$, convertido de rad para graus ($-180$ a $180$)}\\[2pt]
+\hl{\texttt{angulo +=}: filtro, anda 5\% da diferença a cada ciclo; \texttt{if}: histerese, só muda o exibido se afastar mais de 0,8$^\circ$}\\[2pt]
+\hl{\texttt{digitalWrite}: LED aceso se o valor mostrado tiver $|\theta| \geq 30^\circ$, para os dois lados}\\[2pt]
+\hl{\texttt{clearDisplay}: limpa o buffer na RAM, não a tela; \texttt{setCursor}: y = 24 centra na vertical o texto de 16 px nos 64 px}\\[2pt]
+\hl{\texttt{F()}: texto fica na flash; \texttt{write(248)}: $^\circ$ na tabela CP437, ativada com \texttt{cp437(true)} no \texttt{setup}}\\[2pt]
+\hl{\texttt{display}: envia os 1024 bytes em 34 pacotes de até 31 (limite de 32 B da \texttt{Wire}) a 400~kHz, $\approx$25~ms; \texttt{delay}: 50~ms}
+\end{frame}
+
+\begin{frame}{Cuidado de hardware}
+\small
+\begin{itemize}
+  \item \texttt{Wire.begin} faz \texttt{digitalWrite(SDA/SCL, HIGH)}: pull-ups internos de 20--50~k$\Omega$ para 5~V
+  \item OLED é de 3,3~V $\Rightarrow$ \texttt{digitalWrite(SDA/SCL, LOW)} logo após \texttt{tela.begin}
+    \\ durante o \texttt{begin} eles ainda estão ligados; a corrente fica limitada pelos 20--50~k$\Omega$
+  \item Barramento fica com os pull-ups do módulo (3,3~V)
+  \item Ressalva: o AVR a 5~V só garante nível alto no I$^2$C a partir de $0{,}7\,V_{CC} = 3{,}5$~V (datasheet);
+    3,3~V fica fora do garantido. O rigoroso é um conversor de nível
+  \item RAM: o buffer do OLED (1024~B) é alocado com \texttt{malloc} no \texttt{begin}.
+    O compilador mostra 350~B (17\%); o uso real é $\approx$1,37~kB (67\%) dos 2~kB
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Limitações}
+\small
+\begin{itemize}
+  \item Só correto parado: o sensor mede gravidade + aceleração do movimento, sem separar
+  \item Atraso do filtro: constante de tempo $\approx$1,6~s, 95\% em $\approx$5~s (ciclo estimado, não medido)
+  \item De cabeça para baixo ($\pm180^\circ$): ao cruzar de $+179^\circ$ para $-179^\circ$, o filtro passa por $0^\circ$
+  \item Eixo X vertical: $a_y, a_z \approx 0$, ângulo indefinido
+  \item Calibração: 512 e 102,4 são nominais. O datasheet admite 0~g de $\pm150$~mV em Y ($\pm0{,}5$~g)
+    e $\pm300$~mV em Z ($\pm1$~g) entre peças $\Rightarrow$ calibrar o \texttt{ZERO} de cada eixo
+  \item A escala (102,4) quase não importa: \texttt{atan2} cancela um erro comum aos dois eixos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+\begin{itemize}
+  \item Ângulo independe do USB graças à referência em A3
+  \item Valor estável: média + filtro + histerese
+  \item LED a $\pm30^\circ$ sem piscar no limiar (liga $\approx29{,}8^\circ$, desliga $\approx29{,}2^\circ$)
+  \item Custo: resposta lenta, constante de tempo $\approx$1,6~s
+  \item Exatidão absoluta depende de calibrar o 0~g de cada sensor
+\end{itemize}
+\end{frame}
+
+\end{document}
